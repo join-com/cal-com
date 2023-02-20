@@ -579,7 +579,7 @@ const MobileNavigation = () => {
     <>
       <nav
         className={classNames(
-          "bottom-nav fixed bottom-0 z-30 -mx-4 flex w-full border border-t border-gray-200 bg-gray-50 bg-opacity-40 px-1 shadow backdrop-blur-md md:hidden",
+          "pwa:pb-2.5 fixed bottom-0 z-30 -mx-4 flex w-full border border-t border-gray-200 bg-gray-50 bg-opacity-40 px-1 shadow backdrop-blur-md md:hidden",
           isEmbed && "hidden"
         )}>
         {mobileNavigationBottomItems.map((item) => (
@@ -608,7 +608,7 @@ const MobileNavigationItem: React.FC<{
     <Link
       key={item.name}
       href={item.href}
-      className="relative my-2 min-w-0 flex-1 overflow-hidden rounded-md py-2 px-1 text-center text-xs font-medium text-gray-400 hover:bg-gray-200 hover:text-gray-700 focus:z-10 sm:text-sm [&[aria-current='page']]:text-gray-900"
+      className="relative my-2 min-w-0 flex-1 overflow-hidden rounded-md !bg-transparent p-1 text-center text-xs font-medium text-gray-400 hover:text-gray-700 focus:z-10 sm:text-sm [&[aria-current='page']]:text-gray-900"
       aria-current={current ? "page" : undefined}>
       {item.badge && <div className="absolute right-1 top-1">{item.badge}</div>}
       {item.icon && (
@@ -731,7 +731,7 @@ export function ShellMain(props: LayoutProps) {
                 className={classNames(
                   props.backPath
                     ? "relative"
-                    : "fixed bottom-[88px] z-40 ltr:right-4 rtl:left-4 md:z-auto md:ltr:right-0 md:rtl:left-0",
+                    : "pwa:bottom-24 fixed bottom-20 z-40 ltr:right-4 rtl:left-4 md:z-auto md:ltr:right-0 md:rtl:left-0",
                   "flex-shrink-0 md:relative md:bottom-auto md:right-auto"
                 )}>
                 {props.CTA}
@@ -757,7 +757,7 @@ function MainContainer({
     <main className="relative z-0 flex-1 bg-white focus:outline-none">
       {/* show top navigation for md and smaller (tablet and phones) */}
       {TopNavContainerProp}
-      <div className="max-w-full px-4 py-4 md:py-8 lg:px-12">
+      <div className="max-w-full px-4 md:py-8 lg:px-12">
         <ErrorBoundary>
           {!props.withoutMain ? <ShellMain {...props}>{props.children}</ShellMain> : props.children}
         </ErrorBoundary>
