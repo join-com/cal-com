@@ -1,8 +1,10 @@
 import type { User } from "@prisma/client";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { NextRouter, useRouter } from "next/router";
-import React, { Dispatch, Fragment, ReactNode, SetStateAction, useEffect, useState } from "react";
+import type { NextRouter } from "next/router";
+import { useRouter } from "next/router";
+import type { Dispatch, ReactNode, SetStateAction } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 
 import dayjs from "@calcom/dayjs";
@@ -13,7 +15,6 @@ import HelpMenuItem from "@calcom/features/ee/support/components/HelpMenuItem";
 import { TeamsUpgradeBanner } from "@calcom/features/ee/teams/components";
 import { KBarContent, KBarRoot, KBarTrigger } from "@calcom/features/kbar/Kbar";
 import TimezoneChangeDialog from "@calcom/features/settings/TimezoneChangeDialog";
-import { Tips } from "@calcom/features/tips";
 import AdminPasswordBanner from "@calcom/features/users/components/AdminPasswordBanner";
 import CustomBranding from "@calcom/lib/CustomBranding";
 import classNames from "@calcom/lib/classNames";
@@ -22,10 +23,9 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import useTheme from "@calcom/lib/hooks/useTheme";
 import { trpc } from "@calcom/trpc/react";
 import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
-import { SVGComponent } from "@calcom/types/SVGComponent";
+import type { SVGComponent } from "@calcom/types/SVGComponent";
 import {
   Button,
-  Credits,
   Dropdown,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -49,19 +49,10 @@ import {
   FiHelpCircle,
   FiDownload,
   FiLogOut,
-  FiCalendar,
-  FiClock,
-  FiUsers,
-  FiGrid,
-  FiMoreHorizontal,
-  FiFileText,
-  FiZap,
   FiSettings,
   FiArrowRight,
   FiArrowLeft,
 } from "@calcom/ui/components/icon";
-
-import { TeamInviteBadge } from "./TeamInviteBadge";
 
 /* TODO: Migate this */
 
@@ -446,12 +437,10 @@ const navigation: NavigationItemType[] = [
   {
     name: "event_types_page_title",
     href: "/event-types",
-    icon: FiLink,
   },
   {
     name: "bookings",
     href: "/bookings/upcoming",
-    icon: FiCalendar,
     badge: <UnconfirmedBookingBadge />,
     isCurrent: ({ router }) => {
       const path = router.asPath.split("?")[0];
@@ -461,72 +450,14 @@ const navigation: NavigationItemType[] = [
   {
     name: "availability",
     href: "/availability",
-    icon: FiClock,
   },
   {
-    name: "teams",
-    href: "/teams",
-    icon: FiUsers,
-    onlyDesktop: true,
-    badge: <TeamInviteBadge />,
-  },
-  {
-    name: "apps",
-    href: "/apps",
-    icon: FiGrid,
-    isCurrent: ({ router, item }) => {
-      const path = router.asPath.split("?")[0];
-      // During Server rendering path is /v2/apps but on client it becomes /apps(weird..)
-      return (
-        (path.startsWith(item.href) || path.startsWith("/v2" + item.href)) && !path.includes("routing-forms/")
-      );
-    },
-    child: [
-      {
-        name: "app_store",
-        href: "/apps",
-        isCurrent: ({ router, item }) => {
-          const path = router.asPath.split("?")[0];
-          // During Server rendering path is /v2/apps but on client it becomes /apps(weird..)
-          return (
-            (path.startsWith(item.href) || path.startsWith("/v2" + item.href)) &&
-            !path.includes("routing-forms/") &&
-            !path.includes("/installed")
-          );
-        },
-      },
-      {
-        name: "installed_apps",
-        href: "/apps/installed/calendar",
-        isCurrent: ({ router }) => {
-          const path = router.asPath;
-          return path.startsWith("/apps/installed/") || path.startsWith("/v2/apps/installed/");
-        },
-      },
-    ],
-  },
-  {
-    name: MORE_SEPARATOR_NAME,
-    href: "/more",
-    icon: FiMoreHorizontal,
-  },
-  {
-    name: "Routing Forms",
-    href: "/apps/routing-forms/forms",
-    icon: FiFileText,
+    name: "installed_apps",
+    href: "/apps/installed/calendar",
     isCurrent: ({ router }) => {
-      return router.asPath.startsWith("/apps/routing-forms/");
+      const path = router.asPath;
+      return path.startsWith("/apps/installed/") || path.startsWith("/v2/apps/installed/");
     },
-  },
-  {
-    name: "workflows",
-    href: "/workflows",
-    icon: FiZap,
-  },
-  {
-    name: "settings",
-    href: "/settings/my-account/profile",
-    icon: FiSettings,
   },
 ];
 
@@ -720,29 +651,18 @@ function SideBarContainer() {
 }
 
 function SideBar() {
+  const { t } = useLocale();
+
   return (
     <div className="relative">
       <aside className="desktop-transparent top-0 hidden h-full max-h-screen w-14 flex-col overflow-y-auto overflow-x-hidden border-r border-gray-100 bg-gray-50 md:sticky md:flex lg:w-56 lg:px-4">
-        <div className="flex h-full flex-col justify-between py-3 lg:pt-6 ">
-          <header className="items-center justify-between md:hidden lg:flex">
-            <Link href="/event-types" className="px-2">
+        <div className="flex h-full flex-col justify-between py-3 lg:pt-6">
+          <header className="flex-col justify-between md:hidden lg:flex">
+            <Link href="/event-types" className="mb-4">
               <Logo small />
             </Link>
-            <div className="flex space-x-2 rtl:space-x-reverse">
-              <button
-                color="minimal"
-                onClick={() => window.history.back()}
-                className="desktop-only group flex text-sm font-medium text-gray-500 hover:text-gray-900">
-                <FiArrowLeft className="h-4 w-4 flex-shrink-0 text-gray-500 group-hover:text-gray-900" />
-              </button>
-              <button
-                color="minimal"
-                onClick={() => window.history.forward()}
-                className="desktop-only group flex text-sm font-medium text-gray-500 hover:text-gray-900">
-                <FiArrowRight className="h-4 w-4 flex-shrink-0 text-gray-500 group-hover:text-gray-900" />
-              </button>
-              <KBarTrigger />
-            </div>
+
+            <span className="mt-[30px] mb-[20px] font-semibold">{t("interviews_settings")}</span>
           </header>
 
           <hr className="desktop-only absolute -left-3 -right-3 mt-4 block w-full border-gray-200" />
@@ -753,19 +673,6 @@ function SideBar() {
           </Link>
 
           <Navigation />
-        </div>
-
-        <div>
-          <Tips />
-          <div data-testid="user-dropdown-trigger">
-            <span className="hidden lg:inline">
-              <UserDropdown />
-            </span>
-            <span className="hidden md:inline lg:hidden">
-              <UserDropdown small />
-            </span>
-          </div>
-          <Credits />
         </div>
       </aside>
     </div>
@@ -870,6 +777,7 @@ function TopNav() {
         <Link href="/event-types">
           <Logo />
         </Link>
+
         <div className="flex items-center gap-2 self-center">
           <span className="group flex items-center rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 lg:hidden">
             <KBarTrigger />
