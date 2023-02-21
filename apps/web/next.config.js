@@ -231,10 +231,41 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/settings",
-        destination: "/settings/my-account/profile",
+        source: "/(workflows|teams|settings)/:path*",
+        destination: "/event-types",
         permanent: true,
       },
+      {
+        source: "/apps/installed/(payment|automation|analytics|web3|other)",
+        destination: "/apps/installed/calendar",
+        permanent: true,
+      },
+      {
+        source: "/apps/categories/(payment|automation|analytics|web3|other)",
+        destination: "/apps/installed",
+        permanent: true,
+      },
+      {
+        source: "/apps/categories",
+        destination: "/apps/installed",
+        permanent: true,
+      },
+      {
+        source: "/apps",
+        destination: "/apps/installed",
+        permanent: true,
+      },
+      {
+        source: "/bookings/recurring",
+        destination: "/bookings/upcoming",
+        permanent: true,
+      },
+      {
+        source: "/event-types/:type?tabName=(recurring|apps|workflows|team|webhooks)",
+        destination: "/event-types/:type?tabName=setup",
+        permanent: true,
+      },
+
       {
         source: "/settings/teams",
         destination: "/teams",
