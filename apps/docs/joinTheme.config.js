@@ -1,5 +1,3 @@
-import { SEO_IMG_DEFAULT } from "@calcom/lib/constants";
-
 const themeConfig = {
   titleSuffix: " | Join.com",
   logo: <h4 className="m-0">Join.com</h4>,
@@ -18,7 +16,6 @@ const themeConfig = {
         content="Explore advice and explanations for all of our features, and discover new tips and tricks to get the most out of your subscription."
       />
       <meta name="og:title" content="Join Calendar" />
-      <meta name="og:image" content={SEO_IMG_DEFAULT} />
       <meta name="apple-mobile-web-app-title" content="Join Calendar" />
 
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
