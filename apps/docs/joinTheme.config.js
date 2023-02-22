@@ -17,9 +17,9 @@ const themeConfig = {
         name="og:description"
         content="Explore advice and explanations for all of our features, and discover new tips and tricks to get the most out of your subscription."
       />
-      <meta name="og:title" content="Join.com Documentation" />
+      <meta name="og:title" content="Join Calendar" />
       <meta name="og:image" content={SEO_IMG_DEFAULT} />
-      <meta name="apple-mobile-web-app-title" content="Join.com Docs" />
+      <meta name="apple-mobile-web-app-title" content="Join Calendar" />
 
       <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
       <link rel="icon" type="image/png" sizes="32x32" href="/join-favicon-32x32.png" />
@@ -34,7 +34,6 @@ const themeConfig = {
   prevLinks: true,
   nextLinks: true,
   footer: true,
-  footerEditLink: "Edit this page on GitHub",
   footerText: <>© {new Date().getFullYear()} JOIN Solutions AG. All rights reserved.</>,
 };
 
