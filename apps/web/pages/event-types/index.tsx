@@ -56,7 +56,6 @@ import {
 import { withQuery } from "@lib/QueryCell";
 import { HttpError } from "@lib/core/http/error";
 
-import { EmbedDialog } from "@components/Embed";
 import SkeletonLoader from "@components/eventtype/SkeletonLoader";
 
 import { ssrInit } from "@server/lib/ssr";
@@ -673,8 +672,6 @@ const EventTypesPage = () => {
               ) : (
                 <CreateFirstEventTypeView />
               )}
-
-              <EmbedDialog />
             </>
           )}
         />
