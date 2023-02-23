@@ -237,7 +237,7 @@ const EventTypePage = (props: EventTypeSetupProps) => {
       />
     ),
     availability: <AvailabilityTab isTeamEvent={!!team} />,
-  };
+  } as const;
 
   return (
     <EventTypeSingleLayout
