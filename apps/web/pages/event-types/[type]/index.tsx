@@ -28,15 +28,8 @@ import type { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import { AvailabilityTab } from "@components/eventtype/AvailabilityTab";
 // These can't really be moved into calcom/ui due to the fact they use infered getserverside props typings
-import { EventAdvancedTab } from "@components/eventtype/EventAdvancedTab";
-import { EventAppsTab } from "@components/eventtype/EventAppsTab";
-import { EventLimitsTab } from "@components/eventtype/EventLimitsTab";
-import { EventRecurringTab } from "@components/eventtype/EventRecurringTab";
 import { EventSetupTab } from "@components/eventtype/EventSetupTab";
-import { EventTeamTab } from "@components/eventtype/EventTeamTab";
-import { EventTeamWebhooksTab } from "@components/eventtype/EventTeamWebhooksTab";
 import { EventTypeSingleLayout } from "@components/eventtype/EventTypeSingleLayout";
-import EventWorkflowsTab from "@components/eventtype/EventWorkfowsTab";
 
 import { ssrInit } from "@server/lib/ssr";
 
@@ -91,20 +84,7 @@ export type FormValues = {
 export type CustomInputParsed = typeof customInputSchema._output;
 
 const querySchema = z.object({
-  tabName: z
-    .enum([
-      "setup",
-      "availability",
-      "apps",
-      "limits",
-      "recurring",
-      "team",
-      "advanced",
-      "workflows",
-      "webhooks",
-    ])
-    .optional()
-    .default("setup"),
+  tabName: z.enum(["setup", "availability"]).optional().default("setup"),
 });
 
 export type EventTypeSetupProps = RouterOutputs["viewer"]["eventTypes"]["get"];
@@ -244,19 +224,7 @@ const EventTypePage = (props: EventTypeSetupProps) => {
       />
     ),
     availability: <AvailabilityTab isTeamEvent={!!team} />,
-    team: <EventTeamTab teamMembers={teamMembers} team={team} />,
-    limits: <EventLimitsTab eventType={eventType} />,
-    advanced: <EventAdvancedTab eventType={eventType} team={team} />,
-    recurring: <EventRecurringTab eventType={eventType} />,
-    apps: <EventAppsTab eventType={{ ...eventType, URL: permalink }} />,
-    workflows: (
-      <EventWorkflowsTab
-        eventType={eventType}
-        workflows={eventType.workflows.map((workflowOnEventType) => workflowOnEventType.workflow)}
-      />
-    ),
-    webhooks: <EventTeamWebhooksTab eventType={eventType} team={team} />,
-  } as const;
+  };
 
   return (
     <EventTypeSingleLayout
@@ -267,7 +235,7 @@ const EventTypePage = (props: EventTypeSetupProps) => {
       team={team}
       isUpdateMutationLoading={updateMutation.isLoading}
       formMethods={formMethods}
-      disableBorder={tabName === "apps" || tabName === "workflows" || tabName === "webhooks"}
+      disableBorder={false}
       currentUserMembership={currentUserMembership}>
       <Form
         form={formMethods}

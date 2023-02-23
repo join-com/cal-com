@@ -50,19 +50,22 @@ const user: User = {
 
 const customInputs: CustomInputSchema[] = [];
 
+export const defaultEventSettings = {
+  disableGuests: true,
+  periodCountCalendarDays: true,
+  periodDays: 30,
+  periodType: PeriodType.ROLLING,
+};
+
 const commons = {
   isDynamic: true,
-  periodCountCalendarDays: true,
   periodStartDate: null,
   periodEndDate: null,
   beforeEventBuffer: 0,
   afterEventBuffer: 0,
-  periodType: PeriodType.UNLIMITED,
-  periodDays: null,
   slotInterval: null,
   locations: [{ type: DailyLocationType }],
   customInputs,
-  disableGuests: true,
   minimumBookingNotice: 120,
   schedule: null,
   timeZone: null,
@@ -89,40 +92,78 @@ const commons = {
   users: [user],
   hosts: [],
   metadata: EventTypeMetaDataSchema.parse({}),
+  ...defaultEventSettings,
 };
 
-const min15Event = {
-  length: 15,
-  slug: "15",
-  title: "15min",
-  eventName: "Dynamic Collective 15min Event",
-  description: "Dynamic Collective 15min Event",
-  descriptionAsSafeHTML: "Dynamic Collective 15min Event",
+const screeningCall = {
+  length: 30,
+  slug: "30",
+  title: "Screening Call",
+  eventName: "Screening Call 30min Event",
+  description: "Screening Call 30min Event",
+  descriptionAsSafeHTML: "Screening Call 30min Event",
   position: 0,
   ...commons,
 };
-const min30Event = {
-  length: 30,
-  slug: "30",
-  title: "30min",
-  eventName: "Dynamic Collective 30min Event",
-  description: "Dynamic Collective 30min Event",
-  descriptionAsSafeHTML: "Dynamic Collective 30min Event",
+const culturalFitInterview = {
+  length: 60,
+  slug: "60",
+  title: "Cultural Fit Interview",
+  eventName: "Cultural Fit Interview 1hr Event",
+  description: "Cultural Fit Interview 1hr Event",
+  descriptionAsSafeHTML: "Cultural Fit Interview 1hr Event",
   position: 1,
   ...commons,
 };
-const min60Event = {
-  length: 60,
-  slug: "60",
-  title: "60min",
-  eventName: "Dynamic Collective 60min Event",
-  description: "Dynamic Collective 60min Event",
-  descriptionAsSafeHTML: "Dynamic Collective 60min Event",
+const technicalCall = {
+  length: 120,
+  slug: "tech",
+  title: "Technical Call",
+  eventName: "Technical Call 2hr Event",
+  description: "Technical Call 2hr Event",
+  descriptionAsSafeHTML: "Technical Call 2hr Event",
   position: 2,
   ...commons,
 };
+const caseStudyCall = {
+  length: 120,
+  slug: "120",
+  title: "Case Study Call",
+  eventName: "Case Study Call 2hr Event",
+  description: "Case Study Call 2hr Event",
+  descriptionAsSafeHTML: "Case Study Call 2hr Event",
+  position: 3,
+  ...commons,
+};
+const hiringManagerInterview = {
+  length: 60,
+  slug: "hiring-manager",
+  title: "Technical Call",
+  eventName: "Hiring Manager Interview 1hr Event",
+  description: "Hiring Manager Interview 1hr Event",
+  descriptionAsSafeHTML: "Hiring Manager Interview 1hr Event",
+  position: 4,
+  ...commons,
+};
+const founderInterview = {
+  length: 45,
+  slug: "45",
+  title: "Founder Interview",
+  eventName: "Founder Interview 45min Event",
+  description: "Founder Interview 45min Event",
+  descriptionAsSafeHTML: "Founder Interview 45min Event",
+  position: 5,
+  ...commons,
+};
 
-const defaultEvents = [min15Event, min30Event, min60Event];
+const defaultEvents = [
+  screeningCall,
+  culturalFitInterview,
+  technicalCall,
+  caseStudyCall,
+  hiringManagerInterview,
+  founderInterview,
+];
 
 export const getDynamicEventDescription = (dynamicUsernames: string[], slug: string): string => {
   return `Book a ${slug} min event with ${dynamicUsernames.join(", ")}`;
@@ -137,7 +178,7 @@ export const getDefaultEvent = (slug: string) => {
   const event = defaultEvents.find((obj) => {
     return obj.slug === slug;
   });
-  return event || min15Event;
+  return event || screeningCall;
 };
 
 export const getGroupName = (usernameList: string[]): string => {
