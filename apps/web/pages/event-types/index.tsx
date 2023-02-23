@@ -41,7 +41,6 @@ import {
   FiArrowDown,
   FiArrowUp,
   FiClipboard,
-  FiCode,
   FiCopy,
   FiEdit,
   FiEdit2,
@@ -56,7 +55,7 @@ import {
 import { withQuery } from "@lib/QueryCell";
 import { HttpError } from "@lib/core/http/error";
 
-import { EmbedButton, EmbedDialog } from "@components/Embed";
+import { EmbedDialog } from "@components/Embed";
 import SkeletonLoader from "@components/eventtype/SkeletonLoader";
 
 type EventTypeGroups = RouterOutputs["viewer"]["eventTypes"]["getByViewer"]["eventTypeGroups"];
@@ -419,16 +418,6 @@ export const EventTypeList = ({ group, groupIndex, readOnly, types }: EventTypeL
                                   onClick={() => openDuplicateModal(type, group)}>
                                   {t("duplicate")}
                                 </DropdownItem>
-                              </DropdownMenuItem>
-                              <DropdownMenuItem className="outline-none">
-                                <EmbedButton
-                                  as={DropdownItem}
-                                  type="button"
-                                  StartIcon={FiCode}
-                                  className="w-full rounded-none"
-                                  embedUrl={encodeURIComponent(embedLink)}>
-                                  {t("embed")}
-                                </EmbedButton>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               {/* readonly is only set when we are on a team - if we are on a user event type null will be the value. */}

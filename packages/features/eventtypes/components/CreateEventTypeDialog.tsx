@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { defaultEventSettings } from "@calcom/lib/defaultEvents";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { useTypedQuery } from "@calcom/lib/hooks/useTypedQuery";
 import { HttpError } from "@calcom/lib/http-error";
@@ -124,7 +125,7 @@ export default function CreateEventTypeDialog() {
         <Form
           form={form}
           handleSubmit={(values) => {
-            createMutation.mutate(values);
+            createMutation.mutate({ ...values, ...defaultEventSettings });
           }}>
           <div className="mt-3 space-y-6">
             {teamId && (

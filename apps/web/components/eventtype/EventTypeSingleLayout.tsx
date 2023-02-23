@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import type { EventTypeSetupProps, FormValues } from "pages/event-types/[type]";
 import { useMemo, useState, Suspense } from "react";
 import type { UseFormReturn } from "react-hook-form";
-import { TbWebhook } from "react-icons/tb";
 
 import Shell from "@calcom/features/shell/Shell";
 import { classNames } from "@calcom/lib";
@@ -34,20 +33,11 @@ import {
 import {
   FiLink,
   FiCalendar,
-  FiClock,
-  FiSliders,
-  FiRepeat,
-  FiGrid,
-  FiZap,
-  FiUsers,
   FiExternalLink,
-  FiCode,
   FiTrash,
   FiMoreHorizontal,
   FiLoader,
 } from "@calcom/ui/components/icon";
-
-import { EmbedButton, EmbedDialog } from "@components/Embed";
 
 type Props = {
   children: React.ReactNode;
@@ -69,7 +59,7 @@ function getNavigation(props: {
   enabledWorkflowsNumber: number;
   installedAppsNumber: number;
 }) {
-  const { eventType, t, enabledAppsNumber, installedAppsNumber, enabledWorkflowsNumber } = props;
+  const { eventType, t } = props;
   const duration =
     eventType.metadata?.multipleDuration?.map((duration) => ` ${duration}`) || eventType.length;
 
@@ -85,37 +75,6 @@ function getNavigation(props: {
       href: `/event-types/${eventType.id}?tabName=availability`,
       icon: FiCalendar,
       info: `default_schedule_name`, // TODO: Get this from props
-    },
-    {
-      name: "event_limit_tab_title",
-      href: `/event-types/${eventType.id}?tabName=limits`,
-      icon: FiClock,
-      info: `event_limit_tab_description`,
-    },
-    {
-      name: "event_advanced_tab_title",
-      href: `/event-types/${eventType.id}?tabName=advanced`,
-      icon: FiSliders,
-      info: `event_advanced_tab_description`,
-    },
-    {
-      name: "recurring",
-      href: `/event-types/${eventType.id}?tabName=recurring`,
-      icon: FiRepeat,
-      info: `recurring_event_tab_description`,
-    },
-    {
-      name: "apps",
-      href: `/event-types/${eventType.id}?tabName=apps`,
-      icon: FiGrid,
-      //TODO: Handle proper translation with count handling
-      info: `${installedAppsNumber} apps, ${enabledAppsNumber} ${t("active")}`,
-    },
-    {
-      name: "workflows",
-      href: `/event-types/${eventType.id}?tabName=workflows`,
-      icon: FiZap,
-      info: `${enabledWorkflowsNumber} ${t("active")}`,
     },
   ];
 }
@@ -159,30 +118,14 @@ function EventTypeSingleLayout({
 
   // Define tab navigation here
   const EventTypeTabs = useMemo(() => {
-    const navigation = getNavigation({
+    return getNavigation({
       t,
       eventType,
       enabledAppsNumber,
       installedAppsNumber,
       enabledWorkflowsNumber,
     });
-    // If there is a team put this navigation item within the tabs
-    if (team) {
-      navigation.splice(2, 0, {
-        name: "assignment",
-        href: `/event-types/${eventType.id}?tabName=team`,
-        icon: FiUsers,
-        info: eventType.schedulingType === "COLLECTIVE" ? "collective" : "round_robin",
-      });
-      navigation.push({
-        name: "webhooks",
-        href: `/event-types/${eventType.id}?tabName=webhooks`,
-        icon: TbWebhook,
-        info: `${eventType.webhooks.filter((webhook) => webhook.active).length} ${t("active")}`,
-      });
-    }
-    return navigation;
-  }, [t, eventType, installedAppsNumber, enabledAppsNumber, enabledWorkflowsNumber, team]);
+  }, [t, eventType, installedAppsNumber, enabledAppsNumber, enabledWorkflowsNumber]);
 
   const permalink = `${CAL_URL}/${team ? `team/${team.slug}` : eventType.users[0].username}/${
     eventType.slug
@@ -237,13 +180,6 @@ function EventTypeSingleLayout({
                 navigator.clipboard.writeText(permalink);
                 showToast("Link copied!", "success");
               }}
-            />
-            <EmbedButton
-              embedUrl={encodeURIComponent(embedLink)}
-              StartIcon={FiCode}
-              color="secondary"
-              variant="icon"
-              tooltip={t("embed")}
             />
             <Button
               color="secondary"
@@ -360,7 +296,6 @@ function EventTypeSingleLayout({
           {t("delete_event_type_description")}
         </ConfirmationDialogContent>
       </Dialog>
-      <EmbedDialog />
     </Shell>
   );
 }
