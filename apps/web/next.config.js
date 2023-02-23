@@ -246,6 +246,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/availability/troubleshoot",
+        destination: "/availability",
+        permanent: true,
+      },
+      {
         source: "/apps/categories",
         destination: "/apps/installed",
         permanent: true,
