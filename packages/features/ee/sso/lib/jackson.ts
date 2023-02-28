@@ -16,6 +16,7 @@ const opts: JacksonOption = {
   samlPath,
   samlAudience,
   oidcPath,
+  idpEnabled: true,
   db: {
     engine: "sql",
     type: "postgres",
