@@ -91,6 +91,9 @@ module.exports = {
         cal: ["Inter", "sans-serif"],
         sans: ["Inter", "sans-serif"],
       },
+      height: {
+        "25px": "25px",
+      },
     },
   },
 };
