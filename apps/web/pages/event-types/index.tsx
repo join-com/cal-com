@@ -685,6 +685,7 @@ const EventTypesPage = () => {
               ) : (
                 <CreateFirstEventTypeView />
               )}
+
               {router.query.dialog === "duplicate" && <DuplicateDialog />}
             </>
           )}
