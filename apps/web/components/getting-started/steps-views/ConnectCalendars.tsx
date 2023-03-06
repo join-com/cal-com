@@ -89,7 +89,7 @@ const ConnectedCalendars = (props: IConnectCalendarsProps) => {
         type="button"
         data-testid="save-calendar-button"
         className={classNames(
-          "mt-8 flex w-full flex-row justify-center rounded-md border border-black bg-black p-2 text-center text-sm text-white",
+          "mt-8 flex w-full flex-row justify-center rounded-md border bg-blue-600 p-2 text-center text-sm text-white",
           disabledNextButton ? "cursor-not-allowed opacity-20" : ""
         )}
         onClick={() => nextStep()}
