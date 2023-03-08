@@ -18,7 +18,7 @@ export default function Apps({ apps }: InferGetStaticPropsType<typeof getStaticP
     <>
       <Shell
         isPublic
-        backPath="/apps"
+        backPath="/apps/installed"
         smallHeading
         heading={
           <>
