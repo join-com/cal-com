@@ -18,12 +18,12 @@ export default function Apps({ apps }: InferGetStaticPropsType<typeof getStaticP
     <>
       <Shell
         isPublic
-        backPath="/apps"
+        backPath="/apps/installed"
         smallHeading
         heading={
           <>
             <Link
-              href="/apps"
+              href="/apps/installed"
               className="inline-flex items-center justify-start gap-1 rounded-sm py-2 text-gray-900">
               {isLocaleReady ? t("app_store") : <SkeletonText className="h-4 w-24" />}{" "}
             </Link>
