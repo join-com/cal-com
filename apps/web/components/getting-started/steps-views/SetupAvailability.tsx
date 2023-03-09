@@ -1,5 +1,6 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Schedule } from "@calcom/features/schedules";
@@ -15,9 +16,12 @@ interface ISetupAvailabilityProps {
 }
 
 const SetupAvailability = (props: ISetupAvailabilityProps) => {
+  const [isFinishClicked, setIsFinishClicked] = useState(false);
   const { defaultScheduleId } = props;
 
   const { t } = useLocale();
+
+  const utils = trpc.useContext();
 
   const router = useRouter();
   let queryAvailability;
@@ -36,6 +40,39 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
     },
   });
 
+  const DEFAULT_EVENT_TYPES = [
+    {
+      title: t("screening_call"),
+      slug: "30",
+      length: 30,
+    },
+    {
+      title: t("cultural_fit_interview"),
+      slug: "60",
+      length: 60,
+    },
+    {
+      title: t("technical_call"),
+      slug: "tech",
+      length: 120,
+    },
+    {
+      title: t("case_study_all"),
+      slug: "120",
+      length: 120,
+    },
+    {
+      title: t("hiring_manager_interview"),
+      slug: "hiring-manager",
+      length: 60,
+    },
+    {
+      title: t("founder_interview"),
+      slug: "45",
+      length: 45,
+    },
+  ];
+
   const mutationOptions = {
     onError: (error: TRPCClientErrorLike<AppRouter>) => {
       throw new Error(error.message);
@@ -43,8 +80,9 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
   };
   const createSchedule = trpc.viewer.availability.schedule.create.useMutation(mutationOptions);
   const updateSchedule = trpc.viewer.availability.schedule.update.useMutation(mutationOptions);
+  const createEventType = trpc.viewer.eventTypes.create.useMutation();
 
-  const mutation = trpc.viewer.updateProfile.useMutation({
+  const profileMutation = trpc.viewer.updateProfile.useMutation({
     onSuccess: async (_data, context) => {
       router.push("/");
     },
@@ -59,6 +97,7 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
       form={availabilityForm}
       handleSubmit={async (values) => {
         try {
+          setIsFinishClicked(true);
           if (defaultScheduleId) {
             await updateSchedule.mutate({
               scheduleId: defaultScheduleId,
@@ -72,8 +111,17 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
             });
           }
 
-          mutation.mutate({ completedOnboarding: true });
+          await Promise.all(
+            DEFAULT_EVENT_TYPES.map(async (event) => {
+              return createEventType.mutate(event);
+            })
+          );
+
+          await utils.viewer.me.refetch();
+
+          await profileMutation.mutate({ completedOnboarding: true });
         } catch (error) {
+          setIsFinishClicked(false);
           if (error instanceof Error) {
             // setError(error);
             // @TODO: log error
@@ -87,7 +135,7 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
           type="submit"
           data-testid="save-availability"
           className="mt-8 flex w-full flex-row justify-center rounded-md border bg-blue-600 p-2 text-center text-sm text-white"
-          disabled={availabilityForm.formState.isSubmitting}>
+          disabled={availabilityForm.formState.isSubmitting || isFinishClicked}>
           {t("finish")}
           <ArrowRightIcon className="ml-2 h-4 w-4 self-center" aria-hidden="true" />
         </Button>

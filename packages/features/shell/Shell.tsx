@@ -670,7 +670,7 @@ function SideBar() {
               <JoinLogo />
             </Link>
 
-            <span className="mt-[30px] mb-[20px] font-semibold">{t("interviews_settings")}</span>
+            <span className="mt-[30px] mb-[20px] font-semibold">{t("interview_settings")}</span>
           </header>
 
           <hr className="desktop-only absolute -left-3 -right-3 mt-4 block w-full border-gray-200" />

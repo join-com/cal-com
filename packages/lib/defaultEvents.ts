@@ -147,7 +147,7 @@ const caseStudyCall = {
 const hiringManagerInterview = {
   length: 60,
   slug: "hiring-manager",
-  title: "Technical Call",
+  title: "Hiring Manager Interview",
   eventName: "Hiring Manager Interview 1hr Event",
   description: "Hiring Manager Interview 1hr Event",
   descriptionAsSafeHTML: "Hiring Manager Interview 1hr Event",
