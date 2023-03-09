@@ -1635,5 +1635,11 @@
   "this_will_be_the_placeholder": "This will be the placeholder",
   "verification_code": "Verification code",
   "verify": "Verify",
-  "interviews_settings": "Interviews settings"
+  "interview_settings": "Interview settings",
+  "screening_call": "Screening Call",
+  "cultural_fit_interview": "Cultural Fit Interview",
+  "technical_call": "Technical Call",
+  "case_study_all": "Case Study Call",
+  "hiring_manager_interview": "Hiring Manager Interview",
+  "founder_interview": "Founder Interview"
 }
