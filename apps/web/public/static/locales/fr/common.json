@@ -1625,5 +1625,6 @@
   "no_responses_yet": "Aucune réponse pour l'instant",
   "this_will_be_the_placeholder": "Ce sera le texte de substitution",
   "verification_code": "Code de vérification",
-  "verify": "Vérifier"
+  "verify": "Vérifier",
+  "interview_settings": "Paramètres des entretiens"
 }

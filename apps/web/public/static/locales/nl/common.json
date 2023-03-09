@@ -1497,5 +1497,6 @@
   "sso_configuration": "Eenmalige aanmelding",
   "email_no_user_cta": "Uw account aanmaken",
   "change_default_conferencing_app": "Als standaard instellen",
-  "booking_confirmation_failed": "Boekingsbevestiging mislukt"
+  "booking_confirmation_failed": "Boekingsbevestiging mislukt",
+  "interview_settings": "Sollicitatiegesprek instellingen"
 }

@@ -1497,5 +1497,6 @@
   "sso_configuration": "Configuración de SAML",
   "email_no_user_cta": "Crea tu Cuenta",
   "change_default_conferencing_app": "Establecer como predeterminado",
-  "booking_confirmation_failed": "Error al confirmar la reserva"
+  "booking_confirmation_failed": "Error al confirmar la reserva",
+  "interview_settings": "Configuración de entrevista"
 }

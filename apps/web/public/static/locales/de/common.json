@@ -1617,5 +1617,6 @@
   "select_a_router": "Router auswählen",
   "add_a_new_route": "Neue Route hinzufügen",
   "no_responses_yet": "Noch keine Antworten",
-  "this_will_be_the_placeholder": "Dies wird der Platzhalter sein"
+  "this_will_be_the_placeholder": "Dies wird der Platzhalter sein",
+  "interview_settings": "Interview-Einstellungen"
 }
