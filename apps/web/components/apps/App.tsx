@@ -334,7 +334,7 @@ export default function App(props: {
   isTemplate?: boolean;
 }) {
   return (
-    <Shell smallHeading isPublic heading={<ShellHeading />} backPath="/apps" withoutSeo>
+    <Shell smallHeading isPublic heading={<ShellHeading />} backPath="/apps/installed" withoutSeo>
       <HeadSeo
         title={props.name}
         description={props.description}
