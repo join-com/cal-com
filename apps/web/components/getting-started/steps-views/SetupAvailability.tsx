@@ -21,8 +21,6 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
 
   const { t } = useLocale();
 
-  const utils = trpc.useContext();
-
   const router = useRouter();
   let queryAvailability;
   if (defaultScheduleId) {
@@ -116,8 +114,6 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
               return createEventType.mutate(event);
             })
           );
-
-          await utils.viewer.me.refetch();
 
           await profileMutation.mutate({ completedOnboarding: true });
         } catch (error) {
