@@ -109,7 +109,7 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
           }
 
           await Promise.all(
-            DEFAULT_EVENT_TYPES.map(async (event) => {
+            DEFAULT_EVENT_TYPES.map((event) => {
               return createEventType.mutate(event);
             })
           );
