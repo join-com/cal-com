@@ -81,9 +81,6 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
   const createEventType = trpc.viewer.eventTypes.create.useMutation();
 
   const profileMutation = trpc.viewer.updateProfile.useMutation({
-    onSuccess: async (_data, context) => {
-      router.push("/");
-    },
     onError: () => {
       showToast(t("problem_saving_user_profile"), "error");
     },
@@ -110,12 +107,16 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
           }
 
           await Promise.all(
-            DEFAULT_EVENT_TYPES.map(async (event) => {
+            DEFAULT_EVENT_TYPES.map((event) => {
               return createEventType.mutate(event);
             })
           );
 
           await profileMutation.mutate({ completedOnboarding: true });
+
+          setTimeout(() => {
+            router.push("/");
+          }, 1000);
         } catch (error) {
           setIsFinishClicked(false);
           if (error instanceof Error) {
