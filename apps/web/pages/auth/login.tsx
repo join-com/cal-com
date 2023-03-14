@@ -1,4 +1,5 @@
 import type { GetServerSidePropsContext } from "next";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
@@ -33,6 +34,8 @@ export default function Login({
   const { t } = useLocale();
   const methods = useForm<LoginValues>();
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   return (
     <>
       <AuthContainer title={t("login")} description={t("login")} showLogo>
@@ -43,7 +46,7 @@ export default function Login({
               <SAMLLogin
                 samlTenantID={samlTenantID}
                 samlProductID={samlProductID}
-                setErrorMessage={() => null}
+                setErrorMessage={setErrorMessage}
               />
             )}
           </div>
