@@ -681,6 +681,15 @@ function SideBar() {
           </Link>
 
           <Navigation />
+
+          <div data-testid="user-dropdown-trigger">
+            <span className="hidden lg:inline">
+              <UserDropdown />
+            </span>
+            <span className="hidden md:inline lg:hidden">
+              <UserDropdown small />
+            </span>
+          </div>
         </div>
       </aside>
     </div>
