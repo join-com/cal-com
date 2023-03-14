@@ -469,7 +469,7 @@ const navigation: NavigationItemType[] = [
   },
   {
     name: "settings",
-    href: "/settings",
+    href: "/settings/my-account/profile",
   },
 ];
 
