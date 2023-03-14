@@ -467,6 +467,10 @@ const navigation: NavigationItemType[] = [
       return path.startsWith("/apps") || path.startsWith("/v2/apps");
     },
   },
+  {
+    name: "settings",
+    href: "/settings",
+  },
 ];
 
 const moreSeparatorIndex = navigation.findIndex((item) => item.name === MORE_SEPARATOR_NAME);
