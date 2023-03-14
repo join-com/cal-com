@@ -236,7 +236,7 @@ const nextConfig = {
         permanent: true,
       },
       {
-        source: "/(workflows|teams|settings)/:path*",
+        source: "/(workflows|teams)/:path*",
         destination: "/event-types",
         permanent: true,
       },
