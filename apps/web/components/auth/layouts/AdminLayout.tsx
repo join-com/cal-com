@@ -19,18 +19,19 @@ export default function AdminLayout({
   // Force redirect on component level
   useEffect(() => {
     if (session.data && session.data.user.role !== UserPermissionRole.ADMIN) {
-      router.replace("/settings/my-account/profile");
+      router.replace("/event-types");
     }
   }, [session, router]);
 
   const isAppsPage = router.asPath.startsWith("/settings/admin/apps");
+
+  if (session.status === "loading" || session.data?.user.role !== UserPermissionRole.ADMIN) {
+    return null;
+  }
+
   return (
     <SettingsLayout {...rest}>
-      <div className="mx-auto flex max-w-4xl flex-row divide-y divide-gray-200">
-        <div className={isAppsPage ? "min-w-0" : "flex flex-1 [&>*]:flex-1"}>
-          <ErrorBoundary>{children}</ErrorBoundary>
-        </div>
-      </div>
+      <ErrorBoundary>{children}</ErrorBoundary>
     </SettingsLayout>
   );
 }
