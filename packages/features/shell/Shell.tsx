@@ -1,4 +1,5 @@
 import type { User } from "@prisma/client";
+import { UserPermissionRole } from "@prisma/client";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import type { NextRouter } from "next/router";
@@ -467,11 +468,12 @@ const navigation: NavigationItemType[] = [
       return path.startsWith("/apps") || path.startsWith("/v2/apps");
     },
   },
-  {
-    name: "settings",
-    href: "/settings/my-account/profile",
-  },
 ];
+
+const settingsNavItem = {
+  name: "settings",
+  href: "/settings/my-account/profile",
+};
 
 const moreSeparatorIndex = navigation.findIndex((item) => item.name === MORE_SEPARATOR_NAME);
 // We create all needed navigation items for the different use cases
@@ -490,10 +492,12 @@ const { desktopNavigationItems, mobileNavigationBottomItems, mobileNavigationMor
   { desktopNavigationItems: [], mobileNavigationBottomItems: [], mobileNavigationMoreItems: [] }
 );
 
-const Navigation = () => {
+const Navigation = ({ isAdmin }: { isAdmin: boolean }) => {
+  const navItems = isAdmin ? [...desktopNavigationItems, settingsNavItem] : desktopNavigationItems;
+
   return (
     <nav className="mt-2 flex-1 md:px-2 lg:mt-6 lg:px-0">
-      {desktopNavigationItems.map((item) => (
+      {navItems.map((item) => (
         <NavigationItem key={item.name} item={item} />
       ))}
       <div className="mt-0.5 text-gray-500 lg:hidden">
@@ -651,18 +655,18 @@ const MobileNavigationMoreItem: React.FC<{
 };
 
 function SideBarContainer() {
-  const { status } = useSession();
+  const { status, data } = useSession();
+  const isAdmin = data?.user?.role === UserPermissionRole.ADMIN;
   const router = useRouter();
-
   // Make sure that Sidebar is rendered optimistically so that a refresh of pages when logged in have SideBar from the beginning.
   // This improves the experience of refresh on app store pages(when logged in) which are SSG.
   // Though when logged out, app store pages would temporarily show SideBar until session status is confirmed.
   if (status !== "loading" && status !== "authenticated") return null;
   if (router.route.startsWith("/v2/settings/")) return null;
-  return <SideBar />;
+  return <SideBar isAdmin={isAdmin} />;
 }
 
-function SideBar() {
+function SideBar({ isAdmin }: { isAdmin: boolean }) {
   const { t } = useLocale();
 
   return (
@@ -684,16 +688,18 @@ function SideBar() {
             <JoinLogo />
           </Link>
 
-          <Navigation />
+          <Navigation isAdmin={isAdmin} />
 
-          <div data-testid="user-dropdown-trigger">
-            <span className="hidden lg:inline">
-              <UserDropdown />
-            </span>
-            <span className="hidden md:inline lg:hidden">
-              <UserDropdown small />
-            </span>
-          </div>
+          {isAdmin && (
+            <div data-testid="user-dropdown-trigger">
+              <span className="hidden lg:inline">
+                <UserDropdown />
+              </span>
+              <span className="hidden md:inline lg:hidden">
+                <UserDropdown small />
+              </span>
+            </div>
+          )}
         </div>
       </aside>
     </div>

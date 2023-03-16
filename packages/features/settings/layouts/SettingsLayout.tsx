@@ -27,6 +27,7 @@ import {
   FiPlus,
   FiMenu,
 } from "@calcom/ui/components/icon";
+import AdminLayout from "@calcom/web/components/auth/layouts/AdminLayout";
 
 const tabs: VerticalTabItemProps[] = [
   {
@@ -422,7 +423,7 @@ export default function SettingsLayout({
   );
 }
 
-export const getLayout = (page: React.ReactElement) => <SettingsLayout>{page}</SettingsLayout>;
+export const getLayout = (page: React.ReactElement) => <AdminLayout>{page}</AdminLayout>;
 
 function ShellHeader() {
   const { meta } = useMeta();
