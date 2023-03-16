@@ -1641,5 +1641,11 @@
   "technical_call": "Technical Call",
   "case_study_all": "Case Study Call",
   "hiring_manager_interview": "Hiring Manager Interview",
-  "founder_interview": "Founder Interview"
+  "founder_interview": "Founder Interview",
+  "successModal_title": "You have everything set up!",
+  "successModal_description": "To invite a candidate, visit the candidate details page and press Schedule interview.",
+  "setLater": "I’ll set my availability later",
+  "improveModal_title": "You can improve your scheduling experience",
+  "improveModal_connectCalendar": "Connect your calendar to make time matching more precise.",
+  "improveModal_connectConferencing": "Connect your conferencing app to provide candidates with the link."
 }
