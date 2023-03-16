@@ -1498,5 +1498,17 @@
   "email_no_user_cta": "Uw account aanmaken",
   "change_default_conferencing_app": "Als standaard instellen",
   "booking_confirmation_failed": "Boekingsbevestiging mislukt",
-  "interview_settings": "Sollicitatiegesprek instellingen"
+  "interview_settings": "Sollicitatiegesprek instellingen",
+  "screening_call": "Screeningsgesprek",
+  "cultural_fit_interview": "Cultural fit gesprek",
+  "technical_call": "Technisch gesprek",
+  "case_study_all": "Case study presentatie",
+  "hiring_manager_interview": "Sollicitatiegesprek met de wervingsmanager",
+  "founder_interview": "Sollicitatiegesprek met de directeur",
+  "successModal_title": "Alles staat ingesteld! ",
+  "successModal_description": "Om een kandidaat uit te nodigen, ga naar de pagina met kandidaatgegevens en klik op Sollicitatiegesprek plannen.",
+  "setLater": "Ik stel mijn beschikbaarheid later in",
+  "improveModal_title": "Verbeter je afspraakplanning",
+  "improveModal_connectCalendar": "Verbind je kalender om de tijd nauwkeuriger af te stemmen.",
+  "improveModal_connectConferencing": "Verbind je afspraken-app om kandidaten een link te kunnen sturen."
 }

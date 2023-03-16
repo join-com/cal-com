@@ -1618,5 +1618,17 @@
   "add_a_new_route": "Neue Route hinzufügen",
   "no_responses_yet": "Noch keine Antworten",
   "this_will_be_the_placeholder": "Dies wird der Platzhalter sein",
-  "interview_settings": "Interview-Einstellungen"
+  "interview_settings": "Interview-Einstellungen",
+  "screening_call": "Screening-Gespräch",
+  "cultural_fit_interview": "Vorstellungsgespräch zum Cultural Fit",
+  "technical_call": "Gespräch über technische Kenntnisse",
+  "case_study_all": "Gespräch zur Fallstudie",
+  "hiring_manager_interview": "Vorstellungsgespräch mit Hiring Manager:in",
+  "founder_interview": "Vorstellungsgespräch mit Gründer:in",
+  "successModal_title": "Sie haben alles eingerichtet!",
+  "successModal_description": "Um eine:n Bewerber:in einzuladen, besuchen Sie die Bewerberdetailseite und klicken Sie auf Interview vereinbaren.",
+  "setLater": "Ich lege meine Verfügbarkeit später fest",
+  "improveModal_title": "Sie können Ihre Terminplanung verbessern",
+  "improveModal_connectCalendar": "Verbinden Sie Ihren Kalender, um die Zeitabstimmung präziser zu gestalten.",
+  "improveModal_connectConferencing": "Verbinden Sie Ihre Konferenz-App, um Kandidat:innen einen Link zur Verfügung zu stellen."
 }

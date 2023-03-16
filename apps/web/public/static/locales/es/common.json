@@ -1498,5 +1498,17 @@
   "email_no_user_cta": "Crea tu Cuenta",
   "change_default_conferencing_app": "Establecer como predeterminado",
   "booking_confirmation_failed": "Error al confirmar la reserva",
-  "interview_settings": "Configuración de entrevista"
+  "interview_settings": "Configuración de entrevista",
+  "screening_call": "Llamada de screening",
+  "cultural_fit_interview": "Fit cultural",
+  "technical_call": "Llamada técnica",
+  "case_study_all": "Caso práctico",
+  "hiring_manager_interview": "Entrevista al gerente de contratación",
+  "founder_interview": "Entrevista con el fundador",
+  "successModal_title": "¡Ya tienes todo preparado!",
+  "successModal_description": "Para invitar a un candidato, visita la página de datos del candidato y pulsa \"programar entrevista.\"",
+  "setLater": "Estableceré mi disponibilidad más tarde",
+  "improveModal_title": "Puedes mejorar tu experiencia de programación",
+  "improveModal_connectCalendar": "Conecta tu calendario para que la coincidencia de tiempo sea más precisa.",
+  "improveModal_connectConferencing": "Conecta tu aplicación de conferencias para proporcionar el enlace a los candidatos."
 }

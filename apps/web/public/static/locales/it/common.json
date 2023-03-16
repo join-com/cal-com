@@ -1625,5 +1625,17 @@
   "this_will_be_the_placeholder": "Questo sarà un segnaposto",
   "verification_code": "Codice di verifica",
   "verify": "Verifica",
-  "interview_settings": "Impostazioni dell'intervista"
+  "interview_settings": "Impostazioni dell'intervista",
+  "screening_call": "Chiamata di screening",
+  "cultural_fit_interview": "Colloquio di adattamento culturale",
+  "technical_call": "Chiamata tecnica",
+  "case_study_all": "Caso di studio",
+  "hiring_manager_interview": "Colloquio con il responsabile delle assunzioni",
+  "founder_interview": "Intervista al fondatore",
+  "successModal_title": "Avete preparato tutto!",
+  "successModal_description": "Per invitare un candidato, visitate la pagina dei dettagli del candidato e premete Pianifica intervista.",
+  "setLater": "Darò la mia disponibilità più tardi",
+  "improveModal_title": "È possibile migliorare l'esperienza di pianificazione",
+  "improveModal_connectCalendar": "Collegate il vostro calendario per rendere più precisa la corrispondenza temporale.",
+  "improveModal_connectConferencing": "Collegate la vostra app per conferenze per fornire ai candidati il link."
 }

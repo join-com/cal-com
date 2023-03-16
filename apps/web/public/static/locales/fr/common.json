@@ -1626,5 +1626,17 @@
   "this_will_be_the_placeholder": "Ce sera le texte de substitution",
   "verification_code": "Code de vérification",
   "verify": "Vérifier",
-  "interview_settings": "Paramètres des entretiens"
+  "interview_settings": "Paramètres des entretiens",
+  "screening_call": "Entretien de présélection",
+  "cultural_fit_interview": "Entretien culture et valeurs",
+  "technical_call": "Entretien technique",
+  "case_study_all": "Étude de cas",
+  "hiring_manager_interview": "Entretien avec le manager",
+  "founder_interview": "Entretien avec le fondateur",
+  "successModal_title": "Bravo. Pramétrage réussi !",
+  "successModal_description": "Pour inviter un candidat à un entretien, cliquez sur un candidat puis sur Planifier l'entretien.",
+  "setLater": "Plus tard",
+  "improveModal_title": "Simplifiez la prise de rendez-vous.",
+  "improveModal_connectCalendar": "Connectez votre calendrier.",
+  "improveModal_connectConferencing": "Connectez votre application de visio-conférence."
 }
