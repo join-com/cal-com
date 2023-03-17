@@ -1,6 +1,7 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import type { MutableRefObject } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Schedule } from "@calcom/features/schedules";
@@ -13,17 +14,21 @@ import { Button, Form, showToast } from "@calcom/ui";
 
 interface ISetupAvailabilityProps {
   defaultScheduleId?: number | null;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  callbackRef: MutableRefObject<null | Function>;
 }
 
 const SetupAvailability = (props: ISetupAvailabilityProps) => {
   const [isFinishClicked, setIsFinishClicked] = useState(false);
-  const { defaultScheduleId } = props;
+  const { defaultScheduleId, callbackRef } = props;
 
   const { t } = useLocale();
 
   const utils = trpc.useContext();
 
   const router = useRouter();
+  const { data: eventTypes } = trpc.viewer.eventTypes.list.useQuery();
+
   let queryAvailability;
   if (defaultScheduleId) {
     queryAvailability = trpc.viewer.availability.schedule.get.useQuery(
@@ -88,45 +93,59 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
     },
   });
 
+  const handleSubmit = async (values?: Record<string, unknown>) => {
+    setIsFinishClicked(true);
+
+    try {
+      if (eventTypes?.length === 0) {
+        await Promise.all(
+          DEFAULT_EVENT_TYPES.map(async (event) => {
+            return createEventType.mutate(event);
+          })
+        );
+      }
+
+      if (values) {
+        if (defaultScheduleId) {
+          await updateSchedule.mutate({
+            scheduleId: defaultScheduleId,
+            name: t("default_schedule_name"),
+            ...values,
+          });
+        } else {
+          await createSchedule.mutate({
+            name: t("default_schedule_name"),
+            ...values,
+          });
+        }
+      }
+
+      await profileMutation.mutate({ completedOnboarding: true });
+
+      await utils.viewer.me.refetch();
+
+      router.push("/");
+    } catch (error) {
+      setIsFinishClicked(false);
+      if (error instanceof Error) {
+        // setError(error);
+        // @TODO: log error
+      }
+    }
+  };
+
+  useEffect(() => {
+    callbackRef.current = handleSubmit;
+    return () => {
+      callbackRef.current = null;
+    };
+  }, [handleSubmit]);
+
   return (
     <Form
       className="w-full bg-white text-black dark:bg-opacity-5 dark:text-white"
       form={availabilityForm}
-      handleSubmit={async (values) => {
-        try {
-          setIsFinishClicked(true);
-          if (defaultScheduleId) {
-            await updateSchedule.mutate({
-              scheduleId: defaultScheduleId,
-              name: t("default_schedule_name"),
-              ...values,
-            });
-          } else {
-            await createSchedule.mutate({
-              name: t("default_schedule_name"),
-              ...values,
-            });
-          }
-
-          await Promise.all(
-            DEFAULT_EVENT_TYPES.map((event) => {
-              return createEventType.mutate(event);
-            })
-          );
-
-          await profileMutation.mutate({ completedOnboarding: true });
-
-          await utils.viewer.me.refetch();
-
-          router.push("/");
-        } catch (error) {
-          setIsFinishClicked(false);
-          if (error instanceof Error) {
-            // setError(error);
-            // @TODO: log error
-          }
-        }
-      }}>
+      handleSubmit={handleSubmit}>
       <Schedule control={availabilityForm.control} name="schedule" weekStart={1} />
 
       <div>

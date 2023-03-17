@@ -2,6 +2,7 @@ import type { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { useRef } from "react";
 import { z } from "zod";
 
 import { getSession } from "@calcom/lib/auth";
@@ -38,6 +39,8 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
   const { user } = props;
   const { t } = useLocale();
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  const callbackRef = useRef<null | Function>(null);
   const result = stepRouteSchema.safeParse(router.query);
   const currentStep = result.success ? result.data.step[0] : INITIAL_STEP;
 
@@ -53,6 +56,7 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
         `${t("set_availability_getting_started_subtitle_1")}`,
         `${t("set_availability_getting_started_subtitle_2")}`,
       ],
+      skipText: `${t("setLater")}`,
     },
   ];
 
@@ -101,7 +105,7 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
               {currentStep === "connected-calendar" && <ConnectedCalendars nextStep={() => goToIndex(1)} />}
 
               {currentStep === "setup-availability" && (
-                <SetupAvailability defaultScheduleId={user.defaultScheduleId} />
+                <SetupAvailability defaultScheduleId={user.defaultScheduleId} callbackRef={callbackRef} />
               )}
             </StepCard>
             {headers[currentStepIndex]?.skipText && (
@@ -109,9 +113,16 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
                 <Button
                   color="minimal"
                   data-testid="skip-step"
-                  onClick={(event) => {
+                  onClick={async (event) => {
                     event.preventDefault();
-                    goToIndex(currentStepIndex + 1);
+
+                    if (callbackRef.current) {
+                      await callbackRef.current();
+                    }
+
+                    if (currentStepIndex + 1 < steps.length) {
+                      goToIndex(currentStepIndex + 1);
+                    }
                   }}
                   className="mt-8 cursor-pointer px-4 py-2 font-sans text-sm font-medium">
                   {headers[currentStepIndex]?.skipText}

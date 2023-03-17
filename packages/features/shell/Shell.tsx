@@ -14,7 +14,7 @@ import UnconfirmedBookingBadge from "@calcom/features/bookings/UnconfirmedBookin
 import ImpersonatingBanner from "@calcom/features/ee/impersonation/components/ImpersonatingBanner";
 import HelpMenuItem from "@calcom/features/ee/support/components/HelpMenuItem";
 import { TeamsUpgradeBanner } from "@calcom/features/ee/teams/components";
-import { KBarContent, KBarRoot, KBarTrigger } from "@calcom/features/kbar/Kbar";
+import { KBarContent, KBarRoot } from "@calcom/features/kbar/Kbar";
 import TimezoneChangeDialog from "@calcom/features/settings/TimezoneChangeDialog";
 import AdminPasswordBanner from "@calcom/features/users/components/AdminPasswordBanner";
 import CustomBranding from "@calcom/lib/CustomBranding";
@@ -44,12 +44,15 @@ import {
   FiMoon,
   FiExternalLink,
   FiLink,
+  FiCalendar,
+  FiClock,
+  FiGrid,
   FiSlack,
+  FiSettings,
   FiMap,
   FiHelpCircle,
   FiDownload,
   FiLogOut,
-  FiSettings,
   FiArrowRight,
   FiArrowLeft,
 } from "@calcom/ui/components/icon";
@@ -446,10 +449,12 @@ const navigation: NavigationItemType[] = [
   {
     name: "event_types_page_title",
     href: "/event-types",
+    icon: FiLink,
   },
   {
     name: "bookings",
     href: "/bookings/upcoming",
+    icon: FiCalendar,
     badge: <UnconfirmedBookingBadge />,
     isCurrent: ({ router }) => {
       const path = router.asPath.split("?")[0];
@@ -459,10 +464,12 @@ const navigation: NavigationItemType[] = [
   {
     name: "availability",
     href: "/availability",
+    icon: FiClock,
   },
   {
     name: "installed_apps",
     href: "/apps/installed/calendar",
+    icon: FiGrid,
     isCurrent: ({ router }) => {
       const path = router.asPath;
       return path.startsWith("/apps") || path.startsWith("/v2/apps");
@@ -473,6 +480,7 @@ const navigation: NavigationItemType[] = [
 const settingsNavItem = {
   name: "settings",
   href: "/settings/my-account/profile",
+  icon: FiSettings,
 };
 
 const moreSeparatorIndex = navigation.findIndex((item) => item.name === MORE_SEPARATOR_NAME);
@@ -496,13 +504,10 @@ const Navigation = ({ isAdmin }: { isAdmin: boolean }) => {
   const navItems = isAdmin ? [...desktopNavigationItems, settingsNavItem] : desktopNavigationItems;
 
   return (
-    <nav className="mt-2 flex-1 md:px-2 lg:mt-6 lg:px-0">
+    <nav className="flex flex-1 flex-row md:mt-2 md:flex-col md:px-2 lg:mt-6 lg:px-0">
       {navItems.map((item) => (
         <NavigationItem key={item.name} item={item} />
       ))}
-      <div className="mt-0.5 text-gray-500 lg:hidden">
-        <KBarTrigger />
-      </div>
     </nav>
   );
 };
@@ -553,7 +558,7 @@ const NavigationItem: React.FC<{
         aria-current={current ? "page" : undefined}>
         {item.icon && (
           <item.icon
-            className="h-4 w-4 flex-shrink-0 text-gray-500 ltr:mr-2 rtl:ml-2 [&[aria-current='page']]:text-inherit"
+            className="h-4 w-4 flex-shrink-0 text-gray-500 md:ltr:mr-2 md:rtl:ml-2 lg:hidden [&[aria-current='page']]:text-inherit"
             aria-hidden="true"
             aria-current={current ? "page" : undefined}
           />
@@ -792,14 +797,15 @@ function MainContainer({
 }
 
 function TopNavContainer() {
-  const { status } = useSession();
+  const { status, data } = useSession();
+  const isAdmin = data?.user?.role === UserPermissionRole.ADMIN;
   if (status !== "authenticated") return null;
-  return <TopNav />;
+  return <TopNav isAdmin={isAdmin} />;
 }
 
-function TopNav() {
+function TopNav({ isAdmin }: { isAdmin: boolean }) {
   const isEmbed = useIsEmbed();
-  const { t } = useLocale();
+
   return (
     <>
       <nav
@@ -810,16 +816,7 @@ function TopNav() {
         </Link>
 
         <div className="flex items-center gap-2 self-center">
-          <span className="group flex items-center rounded-full text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 lg:hidden">
-            <KBarTrigger />
-          </span>
-          <button className="rounded-full p-1 text-gray-400 hover:bg-gray-50 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2">
-            <span className="sr-only">{t("settings")}</span>
-            <Link href="/settings/my-account/profile">
-              <FiSettings className="h-4 w-4 text-gray-700" aria-hidden="true" />
-            </Link>
-          </button>
-          <UserDropdown small />
+          <Navigation isAdmin={isAdmin} />
         </div>
       </nav>
     </>
