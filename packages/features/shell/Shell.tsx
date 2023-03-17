@@ -169,6 +169,7 @@ type LayoutProps = {
   title?: string;
   heading?: ReactNode;
   subtitle?: ReactNode;
+  banner?: ReactNode;
   headerClassName?: string;
   children: ReactNode;
   CTA?: ReactNode;
@@ -786,6 +787,7 @@ function MainContainer({
       {/* show top navigation for md and smaller (tablet and phones) */}
       {TopNavContainerProp}
       <div className="max-w-full py-4 px-4 md:py-8 lg:px-12">
+        {props.banner}
         <ErrorBoundary>
           {!props.withoutMain ? <ShellMain {...props}>{props.children}</ShellMain> : props.children}
         </ErrorBoundary>
