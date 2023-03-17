@@ -6,6 +6,7 @@ import { useEffect, useState, memo } from "react";
 import { z } from "zod";
 
 import { EventTypeDescriptionLazy as EventTypeDescription } from "@calcom/features/eventtypes/components";
+import { Banner } from "@calcom/features/eventtypes/components/Banner";
 import CreateEventTypeDialog from "@calcom/features/eventtypes/components/CreateEventTypeDialog";
 import { DuplicateDialog } from "@calcom/features/eventtypes/components/DuplicateDialog";
 import Shell from "@calcom/features/shell/Shell";
@@ -647,7 +648,11 @@ const EventTypesPage = () => {
 
   return (
     <div>
-      <Shell heading={t("event_types_page_title")} subtitle={t("event_types_page_subtitle")} CTA={<CTA />}>
+      <Shell
+        heading={t("event_types_page_title")}
+        subtitle={t("event_types_page_subtitle")}
+        CTA={<CTA />}
+        banner={<Banner />}>
         <WithQuery
           customLoader={<SkeletonLoader />}
           success={({ data }) => (
