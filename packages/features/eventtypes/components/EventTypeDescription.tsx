@@ -1,14 +1,15 @@
-import { Prisma, SchedulingType } from "@prisma/client";
-import MarkdownIt from "markdown-it";
+import type { Prisma } from "@prisma/client";
+import { SchedulingType } from "@prisma/client";
 import { useMemo } from "react";
 import { FormattedNumber, IntlProvider } from "react-intl";
-import { z } from "zod";
+import type { z } from "zod";
 
 import { classNames, parseRecurringEvent } from "@calcom/lib";
 import getPaymentAppData from "@calcom/lib/getPaymentAppData";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
-import { baseEventTypeSelect } from "@calcom/prisma";
-import { EventTypeModel } from "@calcom/prisma/zod";
+import { addListFormatting, md } from "@calcom/lib/markdownIt";
+import type { baseEventTypeSelect } from "@calcom/prisma";
+import type { EventTypeModel } from "@calcom/prisma/zod";
 import { Badge } from "@calcom/ui";
 import {
   FiClock,
@@ -29,10 +30,8 @@ export type EventTypeDescriptionProps = {
     seatsPerTimeSlot?: number;
   };
   className?: string;
-  shortenDescription?: true;
+  shortenDescription?: boolean;
 };
-
-const md = new MarkdownIt("default", { html: true, breaks: false, linkify: true });
 
 export const EventTypeDescription = ({
   eventType,
@@ -58,9 +57,7 @@ export const EventTypeDescription = ({
               shortenDescription ? "line-clamp-4" : ""
             )}
             dangerouslySetInnerHTML={{
-              __html: shortenDescription
-                ? md.render(eventType.description?.replace(/<p><br><\/p>|\n/g, " "))
-                : md.render(eventType.description),
+              __html: addListFormatting(md.render(eventType.description)),
             }}
           />
         )}
@@ -68,21 +65,21 @@ export const EventTypeDescription = ({
           {eventType.metadata?.multipleDuration ? (
             eventType.metadata.multipleDuration.map((dur, idx) => (
               <li key={idx}>
-                <Badge variant="gray" size="lg" StartIcon={FiClock}>
+                <Badge variant="gray" startIcon={FiClock}>
                   {dur}m
                 </Badge>
               </li>
             ))
           ) : (
             <li>
-              <Badge variant="gray" size="lg" StartIcon={FiClock}>
+              <Badge variant="gray" startIcon={FiClock}>
                 {eventType.length}m
               </Badge>
             </li>
           )}
           {eventType.schedulingType && (
             <li>
-              <Badge variant="gray" size="lg" StartIcon={FiUsers}>
+              <Badge variant="gray" startIcon={FiUsers}>
                 {eventType.schedulingType === SchedulingType.ROUND_ROBIN && t("round_robin")}
                 {eventType.schedulingType === SchedulingType.COLLECTIVE && t("collective")}
               </Badge>
@@ -90,7 +87,7 @@ export const EventTypeDescription = ({
           )}
           {recurringEvent?.count && recurringEvent.count > 0 && (
             <li className="hidden xl:block">
-              <Badge variant="gray" size="lg" StartIcon={FiRefreshCw}>
+              <Badge variant="gray" startIcon={FiRefreshCw}>
                 {t("repeats_up_to", {
                   count: recurringEvent.count,
                 })}
@@ -99,7 +96,7 @@ export const EventTypeDescription = ({
           )}
           {stripeAppData.price > 0 && (
             <li>
-              <Badge variant="gray" size="lg" StartIcon={FiCreditCard}>
+              <Badge variant="gray" startIcon={FiCreditCard}>
                 <IntlProvider locale="en">
                   <FormattedNumber
                     value={stripeAppData.price / 100.0}
@@ -112,7 +109,7 @@ export const EventTypeDescription = ({
           )}
           {eventType.requiresConfirmation && (
             <li className="hidden xl:block">
-              <Badge variant="gray" size="lg" StartIcon={FiClipboard}>
+              <Badge variant="gray" startIcon={FiClipboard}>
                 {eventType.metadata?.requiresConfirmationThreshold
                   ? t("may_require_confirmation")
                   : t("requires_confirmation")}
@@ -122,7 +119,7 @@ export const EventTypeDescription = ({
           {/* TODO: Maybe add a tool tip to this? */}
           {eventType.requiresConfirmation || (recurringEvent?.count && recurringEvent.count) ? (
             <li className="block xl:hidden">
-              <Badge variant="gray" size="lg" StartIcon={FiPlus}>
+              <Badge variant="gray" startIcon={FiPlus}>
                 <p>{[eventType.requiresConfirmation, recurringEvent?.count].filter(Boolean).length}</p>
               </Badge>
             </li>
@@ -131,7 +128,7 @@ export const EventTypeDescription = ({
           )}
           {eventType?.seatsPerTimeSlot ? (
             <li>
-              <Badge variant="gray" size="lg" StartIcon={FiUser}>
+              <Badge variant="gray" startIcon={FiUser}>
                 <p>{t("event_type_seats", { numberOfSeats: eventType.seatsPerTimeSlot })} </p>
               </Badge>
             </li>

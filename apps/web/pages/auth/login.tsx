@@ -1,10 +1,12 @@
+import { jwtVerify } from "jose";
 import type { GetServerSidePropsContext } from "next";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { isSAMLLoginEnabled, samlProductID, samlTenantID } from "@calcom/features/ee/sso/lib/saml";
-import { getSession } from "@calcom/lib/auth";
+import { WEBSITE_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import prisma from "@calcom/prisma";
 import { Alert } from "@calcom/ui";
@@ -59,9 +61,44 @@ export default function Login({
 
 // TODO: Once we understand how to retrieve prop types automatically from getServerSideProps, remove this temporary variable
 const _getServerSideProps = async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { req } = context;
-  const session = await getSession({ req });
+  const { req, res } = context;
+
+  const session = await getServerSession({ req, res });
   const ssr = await ssrInit(context);
+
+  const verifyJwt = (jwt: string) => {
+    const secret = new TextEncoder().encode(process.env.CALENDSO_ENCRYPTION_KEY);
+
+    return jwtVerify(jwt, secret, {
+      issuer: WEBSITE_URL,
+      audience: `${WEBSITE_URL}/auth/login`,
+      algorithms: ["HS256"],
+    });
+  };
+
+  let totpEmail = null;
+  if (context.query.totp) {
+    try {
+      const decryptedJwt = await verifyJwt(context.query.totp as string);
+      if (decryptedJwt.payload) {
+        totpEmail = decryptedJwt.payload.email as string;
+      } else {
+        return {
+          redirect: {
+            destination: "/auth/error?error=JWT%20Invalid%20Payload",
+            permanent: false,
+          },
+        };
+      }
+    } catch (e) {
+      return {
+        redirect: {
+          destination: "/auth/error?error=Invalid%20JWT%3A%20Please%20try%20again",
+          permanent: false,
+        },
+      };
+    }
+  }
 
   if (session) {
     return {
@@ -89,6 +126,7 @@ const _getServerSideProps = async function getServerSideProps(context: GetServer
       isSAMLLoginEnabled,
       samlTenantID,
       samlProductID,
+      totpEmail,
     },
   };
 };
