@@ -1,4 +1,5 @@
 import classNames from "classnames";
+import { jwtVerify } from "jose";
 import type { GetServerSidePropsContext } from "next";
 import { getCsrfToken, signIn } from "next-auth/react";
 import Link from "next/link";
@@ -8,9 +9,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import { FaGoogle } from "react-icons/fa";
 
 import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
+import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { isSAMLLoginEnabled, samlProductID, samlTenantID } from "@calcom/features/ee/sso/lib/saml";
-import { ErrorCode, getSession } from "@calcom/lib/auth";
-import { WEBAPP_URL } from "@calcom/lib/constants";
+import { WEBAPP_URL, WEBSITE_URL } from "@calcom/lib/constants";
 import { getSafeRedirectUrl } from "@calcom/lib/getSafeRedirectUrl";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { collectPageParameters, telemetryEventTypes, useTelemetry } from "@calcom/lib/telemetry";
@@ -22,6 +24,7 @@ import type { inferSSRProps } from "@lib/types/inferSSRProps";
 import type { WithNonceProps } from "@lib/withNonce";
 import withNonce from "@lib/withNonce";
 
+import AddToHomescreen from "@components/AddToHomescreen";
 import TwoFactor from "@components/auth/TwoFactor";
 import AuthContainer from "@components/ui/AuthContainer";
 
@@ -41,14 +44,14 @@ export default function Login({
   isSAMLLoginEnabled,
   samlTenantID,
   samlProductID,
+  totpEmail,
 }: inferSSRProps<typeof _getServerSideProps> & WithNonceProps) {
   const { t } = useLocale();
   const router = useRouter();
   const methods = useForm<LoginValues>();
 
   const { register, formState } = methods;
-
-  const [twoFactorRequired, setTwoFactorRequired] = useState(false);
+  const [twoFactorRequired, setTwoFactorRequired] = useState(!!totpEmail || false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const errorMessages: { [key: string]: string } = {
@@ -75,6 +78,12 @@ export default function Login({
 
   callbackUrl = safeCallbackUrl || "";
 
+  const LoginFooter = (
+    <a href={`${WEBSITE_URL}/signup`} className="text-brand-500 font-medium">
+      {t("dont_have_an_account")}
+    </a>
+  );
+
   const TwoFactorFooter = (
     <Button
       onClick={() => {
@@ -84,6 +93,16 @@ export default function Login({
       StartIcon={FiArrowLeft}
       color="minimal">
       {t("go_back")}
+    </Button>
+  );
+
+  const ExternalTotpFooter = (
+    <Button
+      onClick={() => {
+        window.location.replace("/");
+      }}
+      color="minimal">
+      {t("cancel")}
     </Button>
   );
 
@@ -110,7 +129,15 @@ export default function Login({
         title={t("login")}
         description={t("login")}
         showLogo
-        footerText={twoFactorRequired ? TwoFactorFooter : null}>
+        footerText={
+          twoFactorRequired
+            ? !totpEmail
+              ? TwoFactorFooter
+              : ExternalTotpFooter
+            : process.env.NEXT_PUBLIC_DISABLE_SIGNUP !== "true"
+            ? LoginFooter
+            : null
+        }>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} data-testid="login-form">
             <div>
@@ -121,7 +148,7 @@ export default function Login({
                 <EmailField
                   id="email"
                   label={t("email_address")}
-                  defaultValue={router.query.email as string}
+                  defaultValue={totpEmail || (router.query.email as string)}
                   placeholder="john.doe@example.com"
                   required
                   {...register("email")}
@@ -138,7 +165,7 @@ export default function Login({
                   <PasswordField
                     id="password"
                     autoComplete="off"
-                    required
+                    required={!totpEmail}
                     className="mb-0"
                     {...register("password")}
                   />
@@ -186,15 +213,51 @@ export default function Login({
           )}
         </FormProvider>
       </AuthContainer>
+      <AddToHomescreen />
     </>
   );
 }
 
 // TODO: Once we understand how to retrieve prop types automatically from getServerSideProps, remove this temporary variable
 const _getServerSideProps = async function getServerSideProps(context: GetServerSidePropsContext) {
-  const { req } = context;
-  const session = await getSession({ req });
+  const { req, res } = context;
+
+  const session = await getServerSession({ req, res });
   const ssr = await ssrInit(context);
+
+  const verifyJwt = (jwt: string) => {
+    const secret = new TextEncoder().encode(process.env.CALENDSO_ENCRYPTION_KEY);
+
+    return jwtVerify(jwt, secret, {
+      issuer: WEBSITE_URL,
+      audience: `${WEBSITE_URL}/auth/login`,
+      algorithms: ["HS256"],
+    });
+  };
+
+  let totpEmail = null;
+  if (context.query.totp) {
+    try {
+      const decryptedJwt = await verifyJwt(context.query.totp as string);
+      if (decryptedJwt.payload) {
+        totpEmail = decryptedJwt.payload.email as string;
+      } else {
+        return {
+          redirect: {
+            destination: "/auth/error?error=JWT%20Invalid%20Payload",
+            permanent: false,
+          },
+        };
+      }
+    } catch (e) {
+      return {
+        redirect: {
+          destination: "/auth/error?error=Invalid%20JWT%3A%20Please%20try%20again",
+          permanent: false,
+        },
+      };
+    }
+  }
 
   if (session) {
     return {
@@ -217,12 +280,13 @@ const _getServerSideProps = async function getServerSideProps(context: GetServer
   }
   return {
     props: {
-      csrfToken: (await getCsrfToken(context)) || null,
+      csrfToken: await getCsrfToken(context),
       trpcState: ssr.dehydrate(),
       isGoogleLoginEnabled: IS_GOOGLE_LOGIN_ENABLED,
       isSAMLLoginEnabled,
       samlTenantID,
       samlProductID,
+      totpEmail,
     },
   };
 };
