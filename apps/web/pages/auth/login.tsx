@@ -32,6 +32,7 @@ export default function Login({
   isSAMLLoginEnabled,
   samlTenantID,
   samlProductID,
+  totpEmail,
 }: inferSSRProps<typeof _getServerSideProps> & WithNonceProps) {
   const { t } = useLocale();
   const methods = useForm<LoginValues>();
@@ -121,6 +122,7 @@ const _getServerSideProps = async function getServerSideProps(context: GetServer
   }
   return {
     props: {
+      csrfToken: await getCsrfToken(context),
       trpcState: ssr.dehydrate(),
       isGoogleLoginEnabled: IS_GOOGLE_LOGIN_ENABLED,
       isSAMLLoginEnabled,
