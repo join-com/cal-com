@@ -129,15 +129,7 @@ export default function Login({
         title={t("login")}
         description={t("login")}
         showLogo
-        footerText={
-          twoFactorRequired
-            ? !totpEmail
-              ? TwoFactorFooter
-              : ExternalTotpFooter
-            : process.env.NEXT_PUBLIC_DISABLE_SIGNUP !== "true"
-            ? LoginFooter
-            : null
-        }>
+        footerText={twoFactorRequired ? (!totpEmail ? TwoFactorFooter : ExternalTotpFooter) : null}>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} data-testid="login-form">
             <div>
