@@ -122,7 +122,6 @@ const _getServerSideProps = async function getServerSideProps(context: GetServer
   }
   return {
     props: {
-      csrfToken: await getCsrfToken(context),
       trpcState: ssr.dehydrate(),
       isGoogleLoginEnabled: IS_GOOGLE_LOGIN_ENABLED,
       isSAMLLoginEnabled,
