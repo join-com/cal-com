@@ -2,7 +2,6 @@ import { CodeHighlightNode, CodeNode } from "@lexical/code";
 import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { TRANSFORMERS } from "@lexical/markdown";
-import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
@@ -31,6 +30,7 @@ export type TextEditorProps = {
   variables?: string[];
   height?: string;
   placeholder?: string;
+  disableLists?: boolean;
 };
 
 const editorConfig = {
@@ -70,11 +70,18 @@ export const Editor = (props: TextEditorProps) => {
               contentEditable={<ContentEditable style={{ height: props.height }} className="editor-input" />}
               placeholder={<div className="-mt-11 p-3 text-sm text-gray-300">{props.placeholder || ""}</div>}
             />
-            <AutoFocusPlugin />
             <ListPlugin />
             <LinkPlugin />
             <AutoLinkPlugin />
-            <MarkdownShortcutPlugin transformers={TRANSFORMERS} />
+            <MarkdownShortcutPlugin
+              transformers={
+                props.disableLists
+                  ? TRANSFORMERS.filter((value, index) => {
+                      if (index !== 3 && index !== 4) return value;
+                    })
+                  : TRANSFORMERS
+              }
+            />
           </div>
         </div>
       </LexicalComposer>

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useRef } from "react";
 import { z } from "zod";
 
-import { getSession } from "@calcom/lib/auth";
+import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
 import { APP_NAME } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import prisma from "@calcom/prisma";
@@ -137,8 +137,10 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
 };
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const { req, res } = context;
+
   const crypto = await import("crypto");
-  const session = await getSession(context);
+  const session = await getServerSession({ req, res });
 
   if (!session?.user?.id) {
     return { redirect: { permanent: false, destination: "/auth/login" } };
