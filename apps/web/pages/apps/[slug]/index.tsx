@@ -97,7 +97,7 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
     });
   }
 
-  // to not overrider each config file separetly, set publisher permanently for all apps
+  // to not override each config file separetly, set publisher permanently for all apps
   singleApp.publisher = "Join.com";
 
   return {
