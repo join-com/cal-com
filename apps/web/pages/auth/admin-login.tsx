@@ -78,12 +78,6 @@ export default function Login({
 
   callbackUrl = safeCallbackUrl || "";
 
-  const LoginFooter = (
-    <a href={`${WEBSITE_URL}/signup`} className="text-brand-500 font-medium">
-      {t("dont_have_an_account")}
-    </a>
-  );
-
   const TwoFactorFooter = (
     <Button
       onClick={() => {
@@ -129,15 +123,7 @@ export default function Login({
         title={t("login")}
         description={t("login")}
         showLogo
-        footerText={
-          twoFactorRequired
-            ? !totpEmail
-              ? TwoFactorFooter
-              : ExternalTotpFooter
-            : process.env.NEXT_PUBLIC_DISABLE_SIGNUP !== "true"
-            ? LoginFooter
-            : null
-        }>
+        footerText={twoFactorRequired ? (!totpEmail ? TwoFactorFooter : ExternalTotpFooter) : null}>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} data-testid="login-form">
             <div>
