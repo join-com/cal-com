@@ -32,6 +32,7 @@ export default function Login({
   isSAMLLoginEnabled,
   samlTenantID,
   samlProductID,
+  totpEmail,
 }: inferSSRProps<typeof _getServerSideProps> & WithNonceProps) {
   const { t } = useLocale();
   const methods = useForm<LoginValues>();
