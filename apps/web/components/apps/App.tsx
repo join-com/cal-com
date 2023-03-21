@@ -13,16 +13,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import type { App as AppType } from "@calcom/types/App";
 import { Button, showToast, SkeletonButton, SkeletonText, HeadSeo, Badge } from "@calcom/ui";
-import {
-  FiBookOpen,
-  FiCheck,
-  FiExternalLink,
-  FiFile,
-  FiFlag,
-  FiMail,
-  FiPlus,
-  FiShield,
-} from "@calcom/ui/components/icon";
+import { FiCheck, FiFlag, FiPlus } from "@calcom/ui/components/icon";
 
 const Component = ({
   name,
@@ -227,70 +218,6 @@ const Component = ({
           )}
         </span>
 
-        <h4 className="mt-8 mb-2 font-semibold text-gray-900 ">{t("learn_more")}</h4>
-        <ul className="prose-sm -ml-1 -mr-1 leading-5">
-          {docs && (
-            <li>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="text-sm font-normal text-black no-underline hover:underline"
-                href={docs}>
-                <FiBookOpen className="mr-1 -mt-1 inline h-4 w-4 text-gray-500" />
-                {t("documentation")}
-              </a>
-            </li>
-          )}
-          {website && (
-            <li>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="font-normal text-black no-underline hover:underline"
-                href={website}>
-                <FiExternalLink className="mr-1 -mt-px inline h-4 w-4 text-gray-500" />
-                {website.replace("https://", "")}
-              </a>
-            </li>
-          )}
-          {email && (
-            <li>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="font-normal text-black no-underline hover:underline"
-                href={"mailto:" + email}>
-                <FiMail className="mr-1 -mt-px inline h-4 w-4 text-gray-500" />
-
-                {email}
-              </a>
-            </li>
-          )}
-          {tos && (
-            <li>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="font-normal text-black no-underline hover:underline"
-                href={tos}>
-                <FiFile className="mr-1 -mt-px inline h-4 w-4 text-gray-500" />
-                {t("terms_of_service")}
-              </a>
-            </li>
-          )}
-          {privacy && (
-            <li>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                className="font-normal text-black no-underline hover:underline"
-                href={privacy}>
-                <FiShield className="mr-1 -mt-px inline h-4 w-4 text-gray-500" />
-                {t("privacy_policy")}
-              </a>
-            </li>
-          )}
-        </ul>
         <hr className="my-8" />
         <span className="leading-1 block text-xs text-gray-500">
           {t("every_app_published", { appName: APP_NAME, companyName: COMPANY_NAME })}

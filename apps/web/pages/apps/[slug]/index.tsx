@@ -96,6 +96,9 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
       return item;
     });
   }
+
+  singleApp.publisher = "Join.com";
+
   return {
     props: {
       source: { content, data },
