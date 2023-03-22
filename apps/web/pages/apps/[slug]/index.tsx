@@ -114,6 +114,10 @@ export const getStaticProps = async (ctx: GetStaticPropsContext) => {
       return item;
     });
   }
+
+  // to not override each config file separetly, set publisher permanently for all apps
+  singleApp.publisher = "Join.com";
+
   return {
     props: {
       source: { content, data },
