@@ -1630,5 +1630,6 @@
   "setLater": "Ik stel mijn beschikbaarheid later in",
   "improveModal_title": "Verbeter je afspraakplanning",
   "improveModal_connectCalendar": "Verbind je kalender om de tijd nauwkeuriger af te stemmen.",
-  "improveModal_connectConferencing": "Verbind je afspraken-app om kandidaten een link te kunnen sturen."
+  "improveModal_connectConferencing": "Verbind je afspraken-app om kandidaten een link te kunnen sturen.",
+  "error_event_exists": "Er bestaat al een evenementtype met deze URL, pas de URL aan."
 }

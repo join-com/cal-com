@@ -1672,5 +1672,6 @@
   "setLater": "I’ll set my availability later",
   "improveModal_title": "You can improve your scheduling experience",
   "improveModal_connectCalendar": "Connect your calendar to make time matching more precise.",
-  "improveModal_connectConferencing": "Connect your conferencing app to provide candidates with the link."
+  "improveModal_connectConferencing": "Connect your conferencing app to provide candidates with the link.",
+  "error_event_exists": "An event type with this URL already exists, please edit the URL."
 }
