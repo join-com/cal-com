@@ -670,7 +670,8 @@ const MobileNavigationMoreItem: React.FC<{
 
 function SideBarContainer() {
   const { status, data } = useSession();
-  const isAdmin = data?.user?.role === UserPermissionRole.ADMIN;
+  const role = data?.user?.role;
+  const isAdmin = role === UserPermissionRole.ADMIN || role === "INACTIVE_ADMIN";
   const router = useRouter();
   // Make sure that Sidebar is rendered optimistically so that a refresh of pages when logged in have SideBar from the beginning.
   // This improves the experience of refresh on app store pages(when logged in) which are SSG.
@@ -808,7 +809,8 @@ function MainContainer({
 
 function TopNavContainer() {
   const { status, data } = useSession();
-  const isAdmin = data?.user?.role === UserPermissionRole.ADMIN;
+  const role = data?.user?.role;
+  const isAdmin = role === UserPermissionRole.ADMIN || role === "INACTIVE_ADMIN";
   if (status !== "authenticated") return null;
   return <TopNav isAdmin={isAdmin} />;
 }
