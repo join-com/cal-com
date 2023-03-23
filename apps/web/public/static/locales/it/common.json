@@ -1637,5 +1637,6 @@
   "setLater": "Darò la mia disponibilità più tardi",
   "improveModal_title": "È possibile migliorare l'esperienza di pianificazione",
   "improveModal_connectCalendar": "Collegate il vostro calendario per rendere più precisa la corrispondenza temporale.",
-  "improveModal_connectConferencing": "Collegate la vostra app per conferenze per fornire ai candidati il link."
+  "improveModal_connectConferencing": "Collegate la vostra app per conferenze per fornire ai candidati il link.",
+  "error_event_exists": "Esiste già un tipo di evento con questo URL, modificare l'URL"
 }

@@ -1630,5 +1630,6 @@
   "setLater": "Ich lege meine Verfügbarkeit später fest",
   "improveModal_title": "Sie können Ihre Terminplanung verbessern",
   "improveModal_connectCalendar": "Verbinden Sie Ihren Kalender, um die Zeitabstimmung präziser zu gestalten.",
-  "improveModal_connectConferencing": "Verbinden Sie Ihre Konferenz-App, um Kandidat:innen einen Link zur Verfügung zu stellen."
+  "improveModal_connectConferencing": "Verbinden Sie Ihre Konferenz-App, um Kandidat:innen einen Link zur Verfügung zu stellen.",
+  "error_event_exists": "Ein Veranstaltungstyp mit dieser URL existiert bereits, bitte bearbeiten Sie die URL."
 }

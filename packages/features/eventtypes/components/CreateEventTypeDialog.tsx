@@ -91,8 +91,7 @@ export default function CreateEventTypeDialog() {
       }
 
       if (err.data?.code === "BAD_REQUEST") {
-        const message = `${err.data.code}: URL already exists.`;
-        showToast(message, "error");
+        showToast(t("error_event_exists"), "error");
       }
 
       if (err.data?.code === "UNAUTHORIZED") {

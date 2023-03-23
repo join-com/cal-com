@@ -1662,5 +1662,6 @@
   "setLater": "Plus tard",
   "improveModal_title": "Simplifiez la prise de rendez-vous.",
   "improveModal_connectCalendar": "Connectez votre calendrier.",
-  "improveModal_connectConferencing": "Connectez votre application de visio-conférence."
+  "improveModal_connectConferencing": "Connectez votre application de visio-conférence.",
+  "error_event_exists": "Un type d'événement avec cette URL existe déjà, veuillez modifier l'URL."
 }
