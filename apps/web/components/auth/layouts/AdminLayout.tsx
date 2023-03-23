@@ -1,4 +1,3 @@
-import { UserPermissionRole } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { ComponentProps } from "react";
@@ -19,14 +18,18 @@ export default function AdminLayout({
 
   // Force redirect on component level
   useEffect(() => {
-    if (role && (role !== UserPermissionRole.ADMIN || role !== "INACTIVE_ADMIN")) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore:next-line
+    if (role && (role !== "ADMIN" || role !== "INACTIVE_ADMIN")) {
       router.replace("/event-types");
     }
   }, [role, router]);
 
   const isAppsPage = router.asPath.startsWith("/settings/admin/apps");
 
-  if (session.status === "loading" || role !== UserPermissionRole.ADMIN || role !== "INACTIVE_ADMIN") {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  if (session.status === "loading" || role !== "ADMIN" || role !== "INACTIVE_ADMIN") {
     return null;
   }
 
