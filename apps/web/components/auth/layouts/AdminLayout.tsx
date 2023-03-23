@@ -14,18 +14,19 @@ export default function AdminLayout({
   ...rest
 }: { children: React.ReactNode } & ComponentProps<typeof Shell>) {
   const session = useSession();
+  const role = session.data?.user.role;
   const router = useRouter();
 
   // Force redirect on component level
   useEffect(() => {
-    if (session.data && session.data.user.role !== UserPermissionRole.ADMIN) {
+    if (role && (role !== UserPermissionRole.ADMIN || role !== "INACTIVE_ADMIN")) {
       router.replace("/event-types");
     }
-  }, [session, router]);
+  }, [role, router]);
 
   const isAppsPage = router.asPath.startsWith("/settings/admin/apps");
 
-  if (session.status === "loading" || session.data?.user.role !== UserPermissionRole.ADMIN) {
+  if (session.status === "loading" || role !== UserPermissionRole.ADMIN || role !== "INACTIVE_ADMIN") {
     return null;
   }
 
