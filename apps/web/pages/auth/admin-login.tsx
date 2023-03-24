@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { FaGoogle } from "react-icons/fa";
 
 import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
 import { ErrorCode } from "@calcom/features/auth/lib/ErrorCode";
@@ -40,7 +39,6 @@ interface LoginValues {
 
 export default function Login({
   csrfToken,
-  isGoogleLoginEnabled,
   isSAMLLoginEnabled,
   samlTenantID,
   samlProductID,
@@ -123,7 +121,6 @@ export default function Login({
         title={t("login")}
         description={t("login")}
         showLogo
-        heading={twoFactorRequired ? t("2fa_code") : t("welcome_back")}
         footerText={twoFactorRequired ? (!totpEmail ? TwoFactorFooter : ExternalTotpFooter) : null}>
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)} data-testid="login-form">
@@ -173,21 +170,8 @@ export default function Login({
           </form>
           {!twoFactorRequired && (
             <>
-              {(isGoogleLoginEnabled || isSAMLLoginEnabled) && <hr className="my-8" />}
+              {isSAMLLoginEnabled && <hr className="my-8" />}
               <div className="space-y-3">
-                {isGoogleLoginEnabled && (
-                  <Button
-                    color="secondary"
-                    className="w-full justify-center"
-                    data-testid="google"
-                    StartIcon={FaGoogle}
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      await signIn("google");
-                    }}>
-                    {t("signin_with_google")}
-                  </Button>
-                )}
                 {isSAMLLoginEnabled && (
                   <SAMLLogin
                     samlTenantID={samlTenantID}
@@ -267,7 +251,7 @@ const _getServerSideProps = async function getServerSideProps(context: GetServer
   }
   return {
     props: {
-      csrfToken: await getCsrfToken(context),
+      csrfToken: (await getCsrfToken(context)) || null,
       trpcState: ssr.dehydrate(),
       isGoogleLoginEnabled: IS_GOOGLE_LOGIN_ENABLED,
       isSAMLLoginEnabled,
