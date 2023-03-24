@@ -95,7 +95,7 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
     },
   });
 
-  const handleSubmit = async (values?: Record<string, unknown>) => {
+  const handleSubmit = async (values: Record<string, unknown>) => {
     setIsFinishClicked(true);
 
     try {
@@ -107,19 +107,17 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
         );
       }
 
-      if (values) {
-        if (defaultScheduleId) {
-          await updateSchedule.mutate({
-            scheduleId: defaultScheduleId,
-            name: t("default_schedule_name"),
-            ...values,
-          });
-        } else {
-          await createSchedule.mutate({
-            name: t("default_schedule_name"),
-            ...values,
-          });
-        }
+      if (defaultScheduleId) {
+        await updateSchedule.mutate({
+          scheduleId: defaultScheduleId,
+          name: t("default_schedule_name"),
+          ...values,
+        });
+      } else {
+        await createSchedule.mutate({
+          name: t("default_schedule_name"),
+          ...values,
+        });
       }
 
       profileMutation.mutate({ completedOnboarding: true });
