@@ -9,12 +9,11 @@ import DisconnectIntegration from "@calcom/features/apps/components/DisconnectIn
 import LicenseRequired from "@calcom/features/ee/common/components/v2/LicenseRequired";
 import Shell from "@calcom/features/shell/Shell";
 import classNames from "@calcom/lib/classNames";
-import { APP_NAME, COMPANY_NAME, SUPPORT_MAIL_ADDRESS } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import type { App as AppType } from "@calcom/types/App";
 import { Button, showToast, SkeletonButton, SkeletonText, HeadSeo, Badge } from "@calcom/ui";
-import { FiCheck, FiFlag, FiPlus } from "@calcom/ui/components/icon";
+import { FiCheck, FiPlus } from "@calcom/ui/components/icon";
 
 /* These app slugs all require Google Cal to be installed */
 
@@ -250,14 +249,6 @@ const Component = ({
             </>
           )}
         </span>
-
-        <hr className="my-8" />
-        <span className="leading-1 block text-xs text-gray-500">
-          {t("every_app_published", { appName: APP_NAME, companyName: COMPANY_NAME })}
-        </span>
-        <a className="mt-2 block text-xs text-red-500" href={`mailto:${SUPPORT_MAIL_ADDRESS}`}>
-          <FiFlag className="inline h-3 w-3" /> {t("report_app")}
-        </a>
       </div>
     </div>
   );
