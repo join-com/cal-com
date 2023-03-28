@@ -14,6 +14,7 @@ import UnconfirmedBookingBadge from "@calcom/features/bookings/UnconfirmedBookin
 import ImpersonatingBanner from "@calcom/features/ee/impersonation/components/ImpersonatingBanner";
 import HelpMenuItem from "@calcom/features/ee/support/components/HelpMenuItem";
 import { TeamsUpgradeBanner } from "@calcom/features/ee/teams/components";
+import { useFlagMap } from "@calcom/features/flags/context/provider";
 import { KBarContent, KBarRoot } from "@calcom/features/kbar/Kbar";
 import TimezoneChangeDialog from "@calcom/features/settings/TimezoneChangeDialog";
 import AdminPasswordBanner from "@calcom/features/users/components/AdminPasswordBanner";
@@ -22,15 +23,16 @@ import classNames from "@calcom/lib/classNames";
 import { APP_NAME, DESKTOP_APP_LINK, JOIN_SLACK, ROADMAP, WEBAPP_URL } from "@calcom/lib/constants";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import useTheme from "@calcom/lib/hooks/useTheme";
+import { isKeyInObject } from "@calcom/lib/isKeyInObject";
 import { trpc } from "@calcom/trpc/react";
 import useMeQuery from "@calcom/trpc/react/hooks/useMeQuery";
 import type { SVGComponent } from "@calcom/types/SVGComponent";
 import {
   Button,
   Dropdown,
+  DropdownItem,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownItem,
   DropdownMenuPortal,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -40,21 +42,21 @@ import {
   SkeletonText,
 } from "@calcom/ui";
 import {
-  FiMoreVertical,
-  FiMoon,
+  FiArrowLeft,
+  FiArrowRight,
+  FiDownload,
   FiExternalLink,
+  FiHelpCircle,
   FiLink,
   FiCalendar,
+  FiMoreVertical,
   FiClock,
   FiGrid,
   FiSlack,
   FiSettings,
   FiMap,
-  FiHelpCircle,
-  FiDownload,
+  FiMoon,
   FiLogOut,
-  FiArrowRight,
-  FiArrowLeft,
 } from "@calcom/ui/components/icon";
 
 import FreshChatProvider from "../ee/support/lib/freshchat/FreshChatProvider";
@@ -530,6 +532,8 @@ function useShouldDisplayNavigationItem(item: NavigationItemType) {
       trpc: {},
     }
   );
+  const flags = useFlagMap();
+  if (isKeyInObject(item.name, flags)) return flags[item.name];
   return !requiredCredentialNavigationItems.includes(item.name) || routingForms?.isInstalled;
 }
 

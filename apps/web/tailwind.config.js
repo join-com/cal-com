@@ -33,5 +33,5 @@ const joinTheme = createUnion(basePreset, joinPreset);
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   ...joinTheme,
-  content: [...joinTheme.content],
+  content: [...joinTheme.content, "../../node_modules/@tremor/**/*.{js,ts,jsx,tsx}"],
 };
