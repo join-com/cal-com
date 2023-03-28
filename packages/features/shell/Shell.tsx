@@ -673,6 +673,7 @@ function SideBarContainer() {
   const role = data?.user?.role;
   const isAdmin = role === UserPermissionRole.ADMIN || role === "INACTIVE_ADMIN";
   const router = useRouter();
+
   // Make sure that Sidebar is rendered optimistically so that a refresh of pages when logged in have SideBar from the beginning.
   // This improves the experience of refresh on app store pages(when logged in) which are SSG.
   // Though when logged out, app store pages would temporarily show SideBar until session status is confirmed.
