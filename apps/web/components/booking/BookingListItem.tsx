@@ -164,15 +164,6 @@ function BookingListItem(booking: BookingItemProps) {
           }`,
         },
         {
-          id: "reschedule_request",
-          icon: FiSend,
-          iconClassName: "rotate-45 w-[16px] -translate-x-0.5 ",
-          label: t("send_reschedule_request"),
-          onClick: () => {
-            setIsOpenRescheduleDialog(true);
-          },
-        },
-        {
           id: "change_location",
           label: t("edit_location"),
           onClick: () => {
