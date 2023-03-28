@@ -1,6 +1,7 @@
 import { jwtVerify } from "jose";
 import type { GetServerSidePropsContext } from "next";
-import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 import { SAMLLogin } from "@calcom/features/auth/SAMLLogin";
@@ -36,8 +37,19 @@ export default function Login({
 }: inferSSRProps<typeof _getServerSideProps> & WithNonceProps) {
   const { t } = useLocale();
   const methods = useForm<LoginValues>();
+  const [isAutoLoginUnsuccesfull, setIsAutoLoginUnsuccesfull] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    signIn("saml", {}, { tenant: samlTenantID, product: samlProductID }).catch(() => {
+      setIsAutoLoginUnsuccesfull(true);
+    });
+  }, []);
+
+  if (!isAutoLoginUnsuccesfull) {
+    return null;
+  }
 
   return (
     <>
