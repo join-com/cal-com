@@ -1,7 +1,6 @@
 import { ArrowRightIcon } from "@heroicons/react/solid";
 import { useRouter } from "next/router";
-import type { MutableRefObject } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Schedule } from "@calcom/features/schedules";
@@ -14,13 +13,11 @@ import { Button, Form, showToast } from "@calcom/ui";
 
 interface ISetupAvailabilityProps {
   defaultScheduleId?: number | null;
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  callbackRef: MutableRefObject<null | Function>;
 }
 
 const SetupAvailability = (props: ISetupAvailabilityProps) => {
   const [isFinishClicked, setIsFinishClicked] = useState(false);
-  const { defaultScheduleId, callbackRef } = props;
+  const { defaultScheduleId } = props;
 
   const { t } = useLocale();
 
@@ -98,7 +95,7 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
     },
   });
 
-  const handleSubmit = async (values?: Record<string, unknown>) => {
+  const handleSubmit = async (values: Record<string, unknown>) => {
     setIsFinishClicked(true);
 
     try {
@@ -110,19 +107,17 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
         );
       }
 
-      if (values) {
-        if (defaultScheduleId) {
-          await updateSchedule.mutate({
-            scheduleId: defaultScheduleId,
-            name: t("default_schedule_name"),
-            ...values,
-          });
-        } else {
-          await createSchedule.mutate({
-            name: t("default_schedule_name"),
-            ...values,
-          });
-        }
+      if (defaultScheduleId) {
+        await updateSchedule.mutate({
+          scheduleId: defaultScheduleId,
+          name: t("default_schedule_name"),
+          ...values,
+        });
+      } else {
+        await createSchedule.mutate({
+          name: t("default_schedule_name"),
+          ...values,
+        });
       }
 
       profileMutation.mutate({ completedOnboarding: true });
@@ -134,13 +129,6 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
       }
     }
   };
-
-  useEffect(() => {
-    callbackRef.current = handleSubmit;
-    return () => {
-      callbackRef.current = null;
-    };
-  }, [handleSubmit]);
 
   return (
     <Form
