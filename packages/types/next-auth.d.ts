@@ -17,5 +17,7 @@ declare module "next-auth" {
     belongsToActiveTeam?: boolean;
     username?: PrismaUser["username"];
     role?: PrismaUser["role"] | "INACTIVE_ADMIN";
+    locale?: string;
+    timeZone?: string;
   }
 }
