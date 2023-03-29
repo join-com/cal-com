@@ -288,9 +288,20 @@ if (isSAMLLoginEnabled) {
           return null;
         }
 
-        const { id, firstName, lastName, email } = userInfo;
+        const customClaimsMapping = [
+          {
+            attribute: "locale",
+            schema: "http://schemas.passportjs.com/locale",
+          },
+          {
+            attribute: "timeZone",
+            schema: "http://schemas.passportjs.com/timeZone",
+          },
+        ];
 
-        return {
+        const { id, firstName, lastName, email, raw } = userInfo;
+
+        const user: { [key: string]: number | string | boolean; id: number } = {
           id: id as unknown as number,
           firstName,
           lastName,
@@ -298,6 +309,14 @@ if (isSAMLLoginEnabled) {
           name: `${firstName} ${lastName}`.trim(),
           email_verified: true,
         };
+
+        customClaimsMapping.forEach((m) => {
+          if (raw[m.schema]) {
+            user[m.attribute] = raw[m.schema];
+          }
+        });
+
+        return user;
       },
     })
   );
@@ -708,6 +727,8 @@ export const AUTH_OPTIONS: AuthOptions = {
             email: user.email,
             identityProvider: idP,
             identityProviderId: account.providerAccountId,
+            locale: user.locale,
+            timeZone: user.timeZone,
           },
         });
 
