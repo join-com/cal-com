@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 
 import { Schedule } from "@calcom/features/schedules";
 import { DEFAULT_SCHEDULE } from "@calcom/lib/availability";
+import { defaultEventSettings } from "@calcom/lib/defaultEvents";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import type { TRPCClientErrorLike } from "@calcom/trpc/react";
 import { trpc } from "@calcom/trpc/react";
@@ -102,7 +103,7 @@ const SetupAvailability = (props: ISetupAvailabilityProps) => {
       if (eventTypes?.length === 0) {
         await Promise.all(
           DEFAULT_EVENT_TYPES.map(async (event) => {
-            return createEventType.mutate(event);
+            return createEventType.mutate({ ...event, ...defaultEventSettings });
           })
         );
       }
