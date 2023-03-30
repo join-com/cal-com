@@ -478,7 +478,7 @@ const navigation: NavigationItemType[] = [
     icon: FiClock,
   },
   {
-    name: "installed_apps",
+    name: "apps",
     href: "/apps/installed/calendar",
     icon: FiGrid,
     isCurrent: ({ router }) => {
