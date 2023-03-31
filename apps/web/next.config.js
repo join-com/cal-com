@@ -243,6 +243,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/auth/logout",
+        destination: "/event-types",
+        permanent: true,
+      },
+      {
         source: "/(workflows|teams)/:path*",
         destination: "/event-types",
         permanent: true,
