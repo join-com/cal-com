@@ -148,8 +148,13 @@ select:focus {
   --tw-ring-color: var(--brand-color);
   border-color: var(--brand-color);
 }
-/*  https://stackoverflow.com/a/69308190 */
-input[type='text']:focus { box-shadow: none; }
+
+
+@layer components {
+  .scroll-bar{
+    @apply scrollbar-thin scrollbar-thumb-rounded-md dark:scrollbar-thumb-darkgray-300 scrollbar-thumb-gray-300 scrollbar-track-transparent
+  }
+}
 
 
 @layer components {
@@ -497,3 +502,5 @@ hr {
 ::-webkit-search-cancel-button {
   -webkit-appearance: none;
 }
+
+
