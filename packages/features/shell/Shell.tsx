@@ -1,6 +1,7 @@
 import type { User } from "@prisma/client";
 import { UserPermissionRole } from "@prisma/client";
 import { signOut, useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { NextRouter } from "next/router";
 import { useRouter } from "next/router";
@@ -38,28 +39,33 @@ import {
   DropdownMenuTrigger,
   ErrorBoundary,
   HeadSeo,
-  showToast,
   SkeletonText,
+  showToast,
 } from "@calcom/ui";
 import {
   FiArrowLeft,
   FiArrowRight,
+  FiCalendar,
+  FiClock,
   FiDownload,
   FiExternalLink,
+  FiGrid,
   FiHelpCircle,
   FiLink,
-  FiCalendar,
-  FiMoreVertical,
-  FiClock,
-  FiGrid,
-  FiSlack,
-  FiSettings,
+  FiLogOut,
   FiMap,
   FiMoon,
-  FiLogOut,
+  FiMoreVertical,
+  FiSettings,
+  FiSlack,
 } from "@calcom/ui/components/icon";
 
 import FreshChatProvider from "../ee/support/lib/freshchat/FreshChatProvider";
+
+// need to import without ssr to prevent hydration errors
+const Tips = dynamic(() => import("@calcom/features/tips").then((mod) => mod.Tips), {
+  ssr: false,
+});
 
 /* TODO: Migate this */
 
