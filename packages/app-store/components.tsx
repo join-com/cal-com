@@ -14,6 +14,7 @@ import { FiAlertCircle, FiArrowRight, FiCheck } from "@calcom/ui/components/icon
 
 import { InstallAppButtonMap } from "./apps.browser.generated";
 import type { InstallAppButtonProps } from "./types";
+import { SkeletonButton } from "@calcom/ui";
 
 export const InstallAppButtonWithoutPlanCheck = (
   props: {
@@ -66,7 +67,7 @@ export const InstallAppButton = (
   }, [isLoading, user, router, props.isProOnly]);
 
   if (isLoading) {
-    return null;
+    return <SkeletonButton className="h-10 w-24" />
   }
 
   return (

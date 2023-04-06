@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 import useAddAppMutation from "@calcom/app-store/_utils/useAddAppMutation";
+import { InstallAppButton } from "@calcom/app-store/components";
 import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import type { App } from "@calcom/types/App";
@@ -17,6 +20,7 @@ interface IConferenceAppItem {
 
 const ConferenceAppItem = (props: IConferenceAppItem) => {
   const { title, imageSrc, type, variant, slug, installed, credentialIds } = props;
+  const [isDeleteOperationStarted, setIsDeleteOperationStarted] = useState(false);
   const { t } = useLocale();
   const utils = trpc.useContext();
 
@@ -38,9 +42,11 @@ const ConferenceAppItem = (props: IConferenceAppItem) => {
     onSuccess: () => {
       showToast(t("app_removed_successfully"), "success");
       utils.viewer.integrations.invalidate({ variant: "conferencing" });
+      setIsDeleteOperationStarted(false);
     },
     onError: () => {
       showToast("Error deleting app", "error");
+      setIsDeleteOperationStarted(false);
     },
   });
 
@@ -54,17 +60,37 @@ const ConferenceAppItem = (props: IConferenceAppItem) => {
         <Button
           color="secondary"
           className="min-w-24 justify-center"
-          onClick={() => deleteAppMutation.mutate({ id: credentialIds[0] })}>
+          loading={isDeleteOperationStarted}
+          onClick={() => {
+            deleteAppMutation.mutate({ id: credentialIds[0] });
+            setIsDeleteOperationStarted(true);
+          }}>
           {t("Uninstall")}
         </Button>
-
       ) : (
-        <Button
-          color="secondary"
-          className="min-w-24 justify-center"
-          onClick={() => mutation.mutate({ type: type, variant: variant, slug: slug, isOmniInstall: true })}>
-          {t("install")}
-        </Button>
+        <InstallAppButton
+          type={type}
+          render={({ useDefaultComponent, ...props }) => {
+            if (useDefaultComponent) {
+              props = {
+                ...props,
+                onClick: () => {
+                  mutation.mutate({ type, variant, slug, isOmniInstall: true });
+                },
+                loading: mutation.isLoading,
+              };
+            }
+            return (
+              <Button
+                {...props}
+                className="min-w-24 justify-center"
+                color="secondary"
+                size="base">
+                {t("install")}
+              </Button>
+            );
+          }}
+        />
       )}
     </div>
   );
