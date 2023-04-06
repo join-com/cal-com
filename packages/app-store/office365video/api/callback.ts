@@ -16,6 +16,8 @@ let client_secret = "";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query;
 
+  const completedOnboarding = req.session?.user.completedOnboarding;
+
   if (typeof code !== "string") {
     res.status(400).json({ message: "No code returned" });
     return;
@@ -101,8 +103,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  const state = decodeOAuthState(req);
-  return res.redirect(
-    getSafeRedirectUrl(state?.returnTo) ?? getInstalledAppPath({ variant: "conferencing", slug: "msteams" })
-  );
+  if (completedOnboarding) {
+    const state = decodeOAuthState(req);
+    return res.redirect(
+      getSafeRedirectUrl(state?.returnTo) ?? getInstalledAppPath({ variant: "conferencing", slug: "msteams" })
+    );
+  } else {
+    res.redirect("/getting-started/connected-conference-apps");
+  }
 }

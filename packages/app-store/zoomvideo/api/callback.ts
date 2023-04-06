@@ -10,6 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { code } = req.query;
   const { client_id, client_secret } = await getZoomAppKeys();
 
+  const completedOnboarding = req.session?.user.completedOnboarding;
+
   const redirectUri = encodeURI(WEBAPP_URL + "/api/integrations/zoomvideo/callback");
   const authHeader = "Basic " + Buffer.from(client_id + ":" + client_secret).toString("base64");
   const result = await fetch(
@@ -84,5 +86,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  res.redirect(getInstalledAppPath({ variant: "conferencing", slug: "zoom" }));
+  if (completedOnboarding) {
+    res.redirect(getInstalledAppPath({ variant: "conferencing", slug: "zoom" }));
+  } else {
+    res.redirect("/getting-started/connected-conference-apps");
+  }
 }

@@ -14,11 +14,13 @@ import type { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import { ConnectedCalendars } from "@components/getting-started/steps-views/ConnectCalendars";
 import { SetupAvailability } from "@components/getting-started/steps-views/SetupAvailability";
+import { ConnectConferenceApps } from "@components/getting-started/steps-views/ConnectConferenceApps";
+import { Toaster } from "react-hot-toast";
 
 export type IOnboardingPageProps = inferSSRProps<typeof getServerSideProps>;
 
 const INITIAL_STEP = "connected-calendar";
-const steps = ["connected-calendar", "setup-availability"] as const;
+const steps = ["connected-calendar", "connected-conference-apps", "setup-availability"] as const;
 
 const stepTransform = (step: (typeof steps)[number]) => {
   const stepIndex = steps.indexOf(step);
@@ -46,6 +48,10 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
       title: `${t("connect_your_calendar")}`,
       subtitle: [`${t("connect_your_calendar_instructions")}`],
       skipText: `${t("connect_calendar_later")}`,
+    },
+    {
+      title: `${t("connect_your_conferencing_apps")}`,
+      subtitle: [`${t("connect_your_conferencing_apps_instructions")}`],
     },
     {
       title: `${t("set_availability")}`,
@@ -100,6 +106,8 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
             <StepCard>
               {currentStep === "connected-calendar" && <ConnectedCalendars nextStep={() => goToIndex(1)} />}
 
+              {currentStep === "connected-conference-apps" && <ConnectConferenceApps nextStep={() => goToIndex(2)} />}
+              
               {currentStep === "setup-availability" && (
                 <SetupAvailability defaultScheduleId={user.defaultScheduleId} />
               )}
@@ -121,6 +129,8 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
           </div>
         </div>
       </div>
+
+      <Toaster position="bottom-right" />
     </div>
   );
 };

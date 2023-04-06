@@ -505,6 +505,17 @@ export const AUTH_OPTIONS: AuthOptions = {
     },
     async session({ session, token }) {
       const hasValidLicense = await checkLicense(prisma);
+
+      const existingUser = await prisma.user.findFirst({
+        where: {
+          AND: [
+            {
+              id: token.id as number,
+            },
+          ],
+        },
+      });
+
       const calendsoSession: Session = {
         ...session,
         hasValidLicense,
@@ -516,6 +527,7 @@ export const AUTH_OPTIONS: AuthOptions = {
           role: token.role as UserPermissionRole,
           impersonatedByUID: token.impersonatedByUID as number,
           belongsToActiveTeam: token?.belongsToActiveTeam as boolean,
+          completedOnboarding: existingUser?.completedOnboarding,
         },
       };
       return calendsoSession;
