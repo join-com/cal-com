@@ -3,10 +3,10 @@ import BaseTable from "./BaseTable";
 import EmailHead from "./EmailHead";
 import EmailScheduledBodyHeaderContent from "./EmailScheduledBodyHeaderContent";
 import EmailSchedulingBodyDivider from "./EmailSchedulingBodyDivider";
-import EmailSchedulingBodyHeader, { BodyHeadType } from "./EmailSchedulingBodyHeader";
+import type { BodyHeadType } from "./EmailSchedulingBodyHeader";
+import EmailSchedulingBodyHeader from "./EmailSchedulingBodyHeader";
 import RawHtml from "./RawHtml";
 import Row from "./Row";
-
 
 const Html = (props: { children: React.ReactNode }) => (
   <>
