@@ -2,7 +2,7 @@ import Head from "next/head";
 
 import { useBrandColors } from "@calcom/embed-core/embed-iframe";
 
-const BRAND_COLOR = "#292929";
+const BRAND_COLOR = "#2563EB";
 const BRAND_TEXT_COLOR = "#ffffff";
 const DARK_BRAND_COLOR = "#fafafa";
 
