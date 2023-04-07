@@ -24,7 +24,7 @@ const ConferenceAppItem = (props: IConferenceAppItem) => {
   const { t } = useLocale();
   const utils = trpc.useContext();
 
-  const mutation = useAddAppMutation(null, {
+  const installAppMutation = useAddAppMutation(null, {
     onSuccess: (data) => {
       utils.viewer.integrations.invalidate({ variant: "conferencing" });
 
@@ -75,9 +75,9 @@ const ConferenceAppItem = (props: IConferenceAppItem) => {
               props = {
                 ...props,
                 onClick: () => {
-                  mutation.mutate({ type, variant, slug, isOmniInstall: true });
+                  installAppMutation.mutate({ type, variant, slug, isOmniInstall: true });
                 },
-                loading: mutation.isLoading,
+                loading: installAppMutation.isLoading,
               };
             }
             return (
