@@ -4,7 +4,6 @@ import { orderBy } from "lodash";
 import type { NextApiResponse } from "next";
 import { z } from "zod";
 
-import getAppKeysFromSlug from "@calcom/app-store/_utils/getAppKeysFromSlug";
 import type { LocationObject } from "@calcom/app-store/locations";
 import { DailyLocationType } from "@calcom/app-store/locations";
 import { stripeDataSchema } from "@calcom/app-store/stripepayment/lib/server";
@@ -425,17 +424,17 @@ export const eventTypesRouter = router({
     // Get Users default conferncing app
 
     const defaultConferencingData = userMetadataSchema.parse(ctx.user.metadata)?.defaultConferencingApp;
-    const appKeys = await getAppKeysFromSlug("daily-video");
+    // const appKeys = await getAppKeysFromSlug("daily-video");
 
     let locations: { type: string; link?: string }[] = [];
 
     // If no locations are passed in and the user has a daily api key then default to daily
-    if (
-      (typeof rest?.locations === "undefined" || rest.locations?.length === 0) &&
-      typeof appKeys.api_key === "string"
-    ) {
-      locations = [{ type: DailyLocationType }];
-    }
+    // if (
+    //   (typeof rest?.locations === "undefined" || rest.locations?.length === 0) &&
+    //   typeof appKeys.api_key === "string"
+    // ) {
+    //   locations = [{ type: DailyLocationType }];
+    // }
 
     // If its defaulting to daily no point handling compute as its done
     if (defaultConferencingData && defaultConferencingData.appSlug !== "daily-video") {

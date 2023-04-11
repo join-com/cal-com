@@ -1,7 +1,6 @@
 import type { Prisma } from "@prisma/client";
 import { PeriodType, SchedulingType } from "@prisma/client";
 
-import { DailyLocationType } from "@calcom/app-store/locations";
 import { getBookingFieldsWithSystemFields } from "@calcom/features/bookings/lib/getBookingFields";
 import type { userSelect } from "@calcom/prisma/selects";
 import type { CustomInputSchema } from "@calcom/prisma/zod-utils";
@@ -67,7 +66,8 @@ const commons = {
   beforeEventBuffer: 0,
   afterEventBuffer: 0,
   slotInterval: null,
-  locations: [{ type: DailyLocationType }],
+  locations: [],
+  // locations: [{ type: DailyLocationType }],
   customInputs,
   minimumBookingNotice: 120,
   schedule: null,
