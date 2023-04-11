@@ -1632,5 +1632,7 @@
   "improveModal_title": "Sie können Ihre Terminplanung verbessern",
   "improveModal_connectCalendar": "Verbinden Sie Ihren Kalender, um die Zeitabstimmung präziser zu gestalten.",
   "improveModal_connectConferencing": "Verbinden Sie Ihre Konferenz-App, um Kandidat:innen einen Link zur Verfügung zu stellen.",
-  "error_event_exists": "Ein Veranstaltungstyp mit dieser URL existiert bereits, bitte bearbeiten Sie die URL."
+  "error_event_exists": "Ein Veranstaltungstyp mit dieser URL existiert bereits, bitte bearbeiten Sie die URL.",
+  "connect_your_conferencing_apps": "Verbinden Sie Ihre Videokonferenz-App",
+  "connect_your_conferencing_apps_instructions": "Verbinden Sie Ihre Videokonferenz-App, um den Link in einer Meeting-Einladung automatisch zu setzen."
 }

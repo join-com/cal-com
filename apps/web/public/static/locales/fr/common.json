@@ -1664,5 +1664,7 @@
   "improveModal_title": "Simplifiez la prise de rendez-vous.",
   "improveModal_connectCalendar": "Connectez votre calendrier.",
   "improveModal_connectConferencing": "Connectez votre application de visio-conférence.",
-  "error_event_exists": "Un type d'événement avec cette URL existe déjà, veuillez modifier l'URL."
+  "error_event_exists": "Un type d'événement avec cette URL existe déjà, veuillez modifier l'URL.",
+  "connect_your_conferencing_apps": "Connectez votre application de visioconférence",
+  "connect_your_conferencing_apps_instructions": "Connectez votre application de visioconférence pour définir automatiquement le lien dans une invitation à une réunion."
 }

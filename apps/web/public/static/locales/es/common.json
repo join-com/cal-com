@@ -1633,5 +1633,8 @@
   "improveModal_title": "Puedes mejorar tu experiencia de programación",
   "improveModal_connectCalendar": "Conecta tu calendario para que la coincidencia de tiempo sea más precisa.",
   "improveModal_connectConferencing": "Conecta tu aplicación de conferencias para proporcionar el enlace a los candidatos.",
-  "error_event_exists": "Ya existe un tipo de evento con esta URL, por favor edite la URL."
+  "error_event_exists": "Ya existe un tipo de evento con esta URL, por favor edite la URL.",
+  "connect_your_conferencing_apps": "Conecta tu aplicación de videoconferencia",
+  "connect_your_conferencing_apps_instructions": "Conecta tu aplicación de videoconferencia para establecer automáticamente el enlace en una invitación de reunión."
+
 }
