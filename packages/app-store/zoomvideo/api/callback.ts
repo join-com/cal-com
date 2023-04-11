@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { WEBAPP_URL } from "@calcom/lib/constants";
 import prisma from "@calcom/prisma";
+import { Prisma } from "@calcom/prisma/client";
 
 import getInstalledAppPath from "../../_utils/getInstalledAppPath";
 import { getZoomAppKeys } from "../lib";
@@ -11,6 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const { client_id, client_secret } = await getZoomAppKeys();
 
   const completedOnboarding = req.session?.user.completedOnboarding;
+  console.log(req.session?.user);
 
   const redirectUri = encodeURI(WEBAPP_URL + "/api/integrations/zoomvideo/callback");
   const authHeader = "Basic " + Buffer.from(client_id + ":" + client_secret).toString("base64");
@@ -71,6 +73,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     await prisma.credential.deleteMany({ where: { id: { in: credentialIdsToDelete }, userId } });
   }
 
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.session?.user.id,
+    },
+    select: {
+      metadata: true,
+    },
+  });
+
   await prisma.user.update({
     where: {
       id: req.session?.user.id,
@@ -82,6 +93,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           key: responseBody,
           appId: "zoom",
         },
+      },
+      metadata: {
+        ...(user?.metadata as Prisma.JsonObject),
+        defaultConferencingApp: { appSlug: "zoom" },
       },
     },
   });

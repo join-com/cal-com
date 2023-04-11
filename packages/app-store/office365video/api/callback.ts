@@ -7,6 +7,7 @@ import prisma from "@calcom/prisma";
 import { decodeOAuthState } from "../../_utils/decodeOAuthState";
 import getAppKeysFromSlug from "../../_utils/getAppKeysFromSlug";
 import getInstalledAppPath from "../../_utils/getInstalledAppPath";
+import { Prisma } from "@calcom/prisma/client";
 
 const scopes = ["OnlineMeetings.ReadWrite", "offline_access"];
 
@@ -100,6 +101,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       key: responseBody,
       userId,
       appId: "msteams",
+    },
+  });
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.session?.user.id,
+    },
+    select: {
+      metadata: true,
+    },
+  });
+
+  await prisma.user.update({
+    where: {
+      id: req.session?.user.id,
+    },
+    data: {
+      metadata: {
+        ...(user?.metadata as Prisma.JsonObject),
+        defaultConferencingApp: { appSlug: "msteams" },
+      },
     },
   });
 
