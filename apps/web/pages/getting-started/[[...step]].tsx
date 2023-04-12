@@ -2,6 +2,7 @@ import type { GetServerSidePropsContext } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import { Toaster } from "react-hot-toast";
 import { z } from "zod";
 
 import { getServerSession } from "@calcom/features/auth/lib/getServerSession";
@@ -13,9 +14,8 @@ import { Button, StepCard, Steps } from "@calcom/ui";
 import type { inferSSRProps } from "@lib/types/inferSSRProps";
 
 import { ConnectedCalendars } from "@components/getting-started/steps-views/ConnectCalendars";
-import { SetupAvailability } from "@components/getting-started/steps-views/SetupAvailability";
 import { ConnectConferenceApps } from "@components/getting-started/steps-views/ConnectConferenceApps";
-import { Toaster } from "react-hot-toast";
+import { SetupAvailability } from "@components/getting-started/steps-views/SetupAvailability";
 
 export type IOnboardingPageProps = inferSSRProps<typeof getServerSideProps>;
 
@@ -106,8 +106,10 @@ const OnboardingPage = (props: IOnboardingPageProps) => {
             <StepCard>
               {currentStep === "connected-calendar" && <ConnectedCalendars nextStep={() => goToIndex(1)} />}
 
-              {currentStep === "connected-conference-apps" && <ConnectConferenceApps nextStep={() => goToIndex(2)} />}
-              
+              {currentStep === "connected-conference-apps" && (
+                <ConnectConferenceApps nextStep={() => goToIndex(2)} />
+              )}
+
               {currentStep === "setup-availability" && (
                 <SetupAvailability defaultScheduleId={user.defaultScheduleId} />
               )}

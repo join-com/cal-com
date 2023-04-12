@@ -81,11 +81,7 @@ const ConferenceAppItem = (props: IConferenceAppItem) => {
               };
             }
             return (
-              <Button
-                {...props}
-                className="min-w-24 justify-center"
-                color="secondary"
-                size="base">
+              <Button {...props} className="min-w-24 justify-center" color="secondary" size="base">
                 {t("install")}
               </Button>
             );

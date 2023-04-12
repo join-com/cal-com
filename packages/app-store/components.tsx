@@ -10,11 +10,11 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import { trpc } from "@calcom/trpc/react";
 import type { RouterOutputs } from "@calcom/trpc/react";
 import type { App } from "@calcom/types/App";
+import { SkeletonButton } from "@calcom/ui";
 import { FiAlertCircle, FiArrowRight, FiCheck } from "@calcom/ui/components/icon";
 
 import { InstallAppButtonMap } from "./apps.browser.generated";
 import type { InstallAppButtonProps } from "./types";
-import { SkeletonButton } from "@calcom/ui";
 
 export const InstallAppButtonWithoutPlanCheck = (
   props: {
@@ -67,7 +67,7 @@ export const InstallAppButton = (
   }, [isLoading, user, router, props.isProOnly]);
 
   if (isLoading) {
-    return <SkeletonButton className="h-10 w-24" />
+    return <SkeletonButton className="h-10 w-24" />;
   }
 
   return (
