@@ -7,6 +7,7 @@ import prisma from "@calcom/prisma";
 import { decodeOAuthState } from "../../_utils/decodeOAuthState";
 import getAppKeysFromSlug from "../../_utils/getAppKeysFromSlug";
 import getInstalledAppPath from "../../_utils/getInstalledAppPath";
+import { Prisma } from "@calcom/prisma/client";
 
 const scopes = ["OnlineMeetings.ReadWrite", "offline_access"];
 
@@ -15,6 +16,8 @@ let client_secret = "";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { code } = req.query;
+
+  const completedOnboarding = req.session?.user.completedOnboarding;
 
   if (typeof code !== "string") {
     res.status(400).json({ message: "No code returned" });
@@ -101,8 +104,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     },
   });
 
-  const state = decodeOAuthState(req);
-  return res.redirect(
-    getSafeRedirectUrl(state?.returnTo) ?? getInstalledAppPath({ variant: "conferencing", slug: "msteams" })
-  );
+  const user = await prisma.user.findUnique({
+    where: {
+      id: req.session?.user.id,
+    },
+    select: {
+      metadata: true,
+    },
+  });
+
+  await prisma.user.update({
+    where: {
+      id: req.session?.user.id,
+    },
+    data: {
+      metadata: {
+        ...(user?.metadata as Prisma.JsonObject),
+        defaultConferencingApp: { appSlug: "msteams" },
+      },
+    },
+  });
+
+  if (completedOnboarding) {
+    const state = decodeOAuthState(req);
+    return res.redirect(
+      getSafeRedirectUrl(state?.returnTo) ?? getInstalledAppPath({ variant: "conferencing", slug: "msteams" })
+    );
+  } else {
+    res.redirect("/getting-started/connected-conference-apps");
+  }
 }

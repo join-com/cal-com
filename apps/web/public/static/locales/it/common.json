@@ -1639,5 +1639,7 @@
   "improveModal_title": "È possibile migliorare l'esperienza di pianificazione",
   "improveModal_connectCalendar": "Collegate il vostro calendario per rendere più precisa la corrispondenza temporale.",
   "improveModal_connectConferencing": "Collegate la vostra app per conferenze per fornire ai candidati il link.",
-  "error_event_exists": "Esiste già un tipo di evento con questo URL, modificare l'URL"
+  "error_event_exists": "Esiste già un tipo di evento con questo URL, modificare l'URL",
+  "connect_your_conferencing_apps": "Connettere l'app per videoconferenze",
+  "connect_your_conferencing_apps_instructions": "Connetti la tua app di videoconferenza per impostare automaticamente il collegamento in un invito a una riunione."
 }

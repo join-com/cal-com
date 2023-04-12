@@ -19,5 +19,6 @@ declare module "next-auth" {
     role?: PrismaUser["role"] | "INACTIVE_ADMIN";
     locale?: string;
     timeZone?: string;
+    completedOnboarding?: boolean
   }
 }

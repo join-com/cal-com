@@ -1632,5 +1632,6 @@
   "improveModal_title": "Verbeter je afspraakplanning",
   "improveModal_connectCalendar": "Verbind je kalender om de tijd nauwkeuriger af te stemmen.",
   "improveModal_connectConferencing": "Verbind je afspraken-app om kandidaten een link te kunnen sturen.",
-  "error_event_exists": "Er bestaat al een evenementtype met deze URL, pas de URL aan."
-}
+  "error_event_exists": "Er bestaat al een evenementtype met deze URL, pas de URL aan.",
+  "connect_your_conferencing_apps": "Verbind uw app voor videoconferenties",
+  "connect_your_conferencing_apps_instructions": "Verbind uw app voor videoconferenties om de link automatisch in een uitnodiging voor een vergadering in te stellen."}

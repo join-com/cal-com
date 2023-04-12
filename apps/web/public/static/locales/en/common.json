@@ -1711,5 +1711,7 @@
   "improveModal_title": "You can improve your scheduling experience",
   "improveModal_connectCalendar": "Connect your calendar to make time matching more precise.",
   "improveModal_connectConferencing": "Connect your conferencing app to provide candidates with the link.",
-  "error_event_exists": "An event type with this URL already exists, please edit the URL."
+  "error_event_exists": "An event type with this URL already exists, please edit the URL.",
+  "connect_your_conferencing_apps": "Connect your video conferencing app",
+  "connect_your_conferencing_apps_instructions": "Connect your video conferencing app to set the link in a meeting invitation automatically."
 }
