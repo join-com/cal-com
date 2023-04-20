@@ -216,6 +216,15 @@ const nextConfig = {
         ],
       },
       {
+        source: "/apps/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           {
