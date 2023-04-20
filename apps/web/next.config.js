@@ -225,6 +225,15 @@ const nextConfig = {
         ],
       },
       {
+        source: "/_next/data/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "no-store",
+          },
+        ],
+      },
+      {
         source: "/:path*",
         headers: [
           {
