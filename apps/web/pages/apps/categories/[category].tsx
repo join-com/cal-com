@@ -1,5 +1,5 @@
-import { AppCategories } from "@prisma/client";
-import type { GetStaticPropsContext, InferGetStaticPropsType } from "next";
+import type { AppCategories } from "@prisma/client";
+import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -9,7 +9,7 @@ import { useLocale } from "@calcom/lib/hooks/useLocale";
 import prisma from "@calcom/prisma";
 import { AppCard, SkeletonText } from "@calcom/ui";
 
-export default function Apps({ apps }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Apps({ apps }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const { t, isLocaleReady } = useLocale();
   const router = useRouter();
   const { category } = router.query;
@@ -47,17 +47,8 @@ export default function Apps({ apps }: InferGetStaticPropsType<typeof getStaticP
   );
 }
 
-export const getStaticPaths = async () => {
-  const paths = Object.keys(AppCategories);
-
-  return {
-    paths: paths.map((category) => ({ params: { category } })),
-    fallback: false,
-  };
-};
-
-export const getStaticProps = async (context: GetStaticPropsContext) => {
-  const category = context.params?.category as AppCategories;
+export const getServerSideProps = async (context: GetServerSidePropsContext) => {
+  const category = (context.params?.category || context.query?.category) as AppCategories;
 
   const appQuery = await prisma.app.findMany({
     where: {
@@ -79,6 +70,5 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     props: {
       apps,
     },
-    revalidate: 10,
   };
 };
