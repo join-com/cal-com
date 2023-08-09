@@ -41,7 +41,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       logger.error("Could not add this caldav account", reason);
 
       if (reason instanceof Error && reason.message === "Invalid credentials") {
-        return res.status(403).json({ message: reason.message });
+        return res.status(400).json({ message: reason.message });
       }
 
       return res.status(500).json({ message: "Could not add this caldav account" });
