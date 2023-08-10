@@ -711,10 +711,7 @@ export const eventTypesRouter = router({
         });
       }
 
-      throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
-        message: error instanceof Error ? error.message : "Something went wrong",
-      });
+      throw error;
     }
 
     const res = ctx.res as NextApiResponse;
