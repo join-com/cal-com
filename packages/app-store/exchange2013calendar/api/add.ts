@@ -1,3 +1,4 @@
+import { SoapFaultDetails } from "ews-javascript-api";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 
@@ -48,6 +49,15 @@ async function postHandler(req: NextApiRequest, res: NextApiResponse) {
     });
   } catch (reason) {
     logger.error("Could not add this exchange account", reason);
+
+    if (reason instanceof SoapFaultDetails) {
+      if (reason.HttpStatusCode === 401) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+      if (reason.message.includes(`NOTFOUND ${body.username}`)) {
+        return res.status(400).json({ message: "Invalid calendar link" });
+      }
+    }
     return res.status(500).json({ message: "Could not add this exchange account" });
   }
 

@@ -40,6 +40,13 @@ export async function getHandler(req: NextApiRequest, res: NextApiResponse) {
   } catch (reason) {
     logger.info(reason);
     if (reason instanceof SoapFaultDetails && reason.message != "") {
+      if (reason.HttpStatusCode === 401) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+      if (reason.message === "www-authenticate not found on response of second request") {
+        return res.status(400).json({ message: "Invalid calendar link" });
+      }
+
       return res.status(500).json({ message: reason.message });
     }
     return res.status(500).json({ message: "Could not add this exchange account" });
