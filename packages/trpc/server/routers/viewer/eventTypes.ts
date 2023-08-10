@@ -697,13 +697,26 @@ export const eventTypesRouter = router({
       }
     }
 
-    const eventType = await ctx.prisma.eventType.update({
-      where: { id },
-      data,
-    });
+    let eventType;
+    try {
+      eventType = await ctx.prisma.eventType.update({
+        where: { id },
+        data,
+      });
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError && error.code === "P2002") {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "This url slug has been already used",
+        });
+      }
+
+      throw error;
+    }
+
     const res = ctx.res as NextApiResponse;
     if (typeof res?.revalidate !== "undefined") {
-      await res?.revalidate(`/${ctx.user.username}/${eventType.slug}`);
+      await res?.revalidate(`/${ctx.user.username}/${eventType?.slug}`);
     }
     return { eventType };
   }),
