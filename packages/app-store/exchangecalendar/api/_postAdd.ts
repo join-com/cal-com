@@ -47,7 +47,7 @@ export async function getHandler(req: NextApiRequest, res: NextApiResponse) {
         return res.status(400).json({ message: "Invalid calendar link" });
       }
 
-      return res.status(500).json({ message: reason.message });
+      return res.status(400).json({ message: reason.message });
     }
     return res.status(500).json({ message: "Could not add this exchange account" });
   }
